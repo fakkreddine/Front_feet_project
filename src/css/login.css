@@ -1,0 +1,30 @@
+.login-btn{
+    background-color: var(--secondary-color);
+}
+.login-btn:hover{
+opacity: 0.9;
+}
+.text-hi{
+    color: var(--highlited-color);
+}
+.sign_button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 70%;
+    border: 1px solid var(--highlited-color);
+    border-radius: 6px;
+    padding: 6px;
+    
+}
+.paltform-container{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  
+    width: 100%;
+    
+}
