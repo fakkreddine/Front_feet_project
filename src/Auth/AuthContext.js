@@ -2,13 +2,22 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import { GithubAuthProvider } from "firebase/auth";
 import {auth} from "./firebase"
-import { getAuth,sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider,onAuthStateChanged,createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth,sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider,onAuthStateChanged,createUserWithEmailAndPassword,signOut } from "firebase/auth";
 import { redirect, useNavigate } from "react-router-dom";
+import { wait } from "@testing-library/user-event/dist/utils";
 const AuthContext=createContext();
 export const AuthProvider=({children})=>{
      // React Router's useNavigate for redirection
   
 const auth=getAuth();
+
+
+const logout=async()=>{
+  try{
+    await signOut(auth)
+
+  }catch{}
+}
 const resetpass=async()=>{
   sendPasswordResetEmail(auth, user.email)
   .then(() => {
@@ -94,7 +103,7 @@ let [Loding,setLoding]=useState(true)
         }
     },[user])
     return(
-         <AuthContext.Provider value={{googleSignIn,githubSignIn,user,resetpass,sinupwihmailandpass,auth,Loding}}>
+         <AuthContext.Provider value={{googleSignIn,githubSignIn,user,resetpass,sinupwihmailandpass,auth,Loding,logout}}>
         {children}
      </AuthContext.Provider>
      )

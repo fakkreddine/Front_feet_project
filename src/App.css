@@ -4,3 +4,8 @@
     --secondary-color: #2d4e86;
     --highlited-color : #192c4d;
   }
+  .ubuntu-medium {
+    font-family: "Ubuntu", sans-serif;
+    
+    font-style: normal;
+  }
