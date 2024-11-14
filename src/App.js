@@ -20,6 +20,7 @@ function App() {
         <Route path="/signup" element={<Signup></Signup>}/>
         <Route path="/home" element={<ProtectRoute><Home></Home></ProtectRoute> }/>
         <Route path="/dash" element={<ProtectRoute><UserHome></UserHome></ProtectRoute> }/>
+        
       
       </Routes>
       
