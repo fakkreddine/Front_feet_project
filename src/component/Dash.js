@@ -3,10 +3,10 @@ import Stats from './Stats'
 import classes from "../assets/presentation.png"
 import student from "../assets/graduation.png"
 import teacher from "../assets/school.png"
-import table from "../assets/calendar.png"
+import table from "../assets/schedule.png"
 import group from "../assets/multiple-users-silhouette.png"
 import department from "../assets/structure.png"
-import subject from "../assets/books.png"
+import subject from "../assets/justify-paragraph.png"
 import Note from './Note'
 import Cal from './Cal'
 import {Badge} from 'antd';
