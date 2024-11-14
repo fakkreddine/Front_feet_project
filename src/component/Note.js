@@ -6,6 +6,8 @@ import "../css/note.css"
 import { useState } from 'react';
 import { Modal } from 'antd';
 function Note() {
+let local=localStorage.getItem("notes") ||localStorage.setItem("notes","[]")
+  let [notes,setnotes]=useState(JSON.parse(local))
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -16,14 +18,17 @@ function Note() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  console.log(notes)
   return (
     <div className='w-full h-full'>
 <h1 className='ubuntu-medium text-3xl font-normal   px-4 '>My Notes</h1>
 
 <div className='note-container  flex justify-center items-center gap-5  w-full h-full'>
-    <Notecard back="bg_red"></Notecard>
-    <Notecard back="bg_blue"></Notecard>
-    <Notecard back="bg_yel"></Notecard>
+  {notes?.map((item)=>{
+    return(<Notecard data={item} ></Notecard>)
+  })}
+    
+    
     <AddNew show={showModal}></AddNew>
     <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
     <div class="relative  w-full h-full">
