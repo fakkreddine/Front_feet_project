@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, List } from 'antd';
 import img from "../../assets/edit.png"
 import {Badge} from "antd"
-function Overview_teasher() {
+function Overviewt() {
   return (
     <section class=" h-screen p-4 md:ml-64  pt-20 bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -113,4 +113,4 @@ function Overview_teasher() {
   )
 }
 
-export default Overview_teasher
+export default Overviewt

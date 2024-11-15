@@ -58,7 +58,7 @@ function Aside() {
           </li>
           <li>
           <Link
-  to="/departments"
+  to="/dash/departments"
   className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
 >
   <i className="fas fa-building text-gray-500 w-6 h-6"></i>
@@ -68,7 +68,7 @@ function Aside() {
 </li>
           <li>
             <Link
-              to="/teachers" 
+              to="/dash/teachers" 
               className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <svg
@@ -116,7 +116,7 @@ function Aside() {
           </li>
           <li>
             <Link
-              to="/students"  // Added Link to /students route
+              to="/dash/students"  // Added Link to /students route
               className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <svg
