@@ -59,7 +59,7 @@ export const FileUpload = ({
         <input
           ref={fileInputRef}
           id="file-upload-handle"
-          type="file"
+          type="file" accept=".csv"
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden" />
         <div
