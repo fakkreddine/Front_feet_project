@@ -15,9 +15,9 @@ const DepartmentPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false); // New state for delete modal
-  const [departmentToDelete, setDepartmentToDelete] = useState(null); // Store department to delete
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false); 
+  const [departmentToDelete, setDepartmentToDelete] = useState(null); 
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
@@ -152,14 +152,11 @@ const DepartmentPage = () => {
       <Nav />
       <Aside className="w-64 bg-gray-800 text-white" />
 
-      {/* Main Container for Content */}
       <div className="flex-1 flex flex-col ml-64 p-6 overflow-y-auto">
         <br /> <br /> <br /> <br />
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
           Department Management
         </h1>
-
-        {/* Department Management */}
         <div className="bg-white p-6 rounded-md shadow-md w-full mx-auto border border-gray-200">
 
         <form className="flex items-center max-w-lg mx-auto mb-4">
@@ -192,7 +189,6 @@ const DepartmentPage = () => {
   </button>
 </form>
 
-          {/* Add New Department Button */}
           <div className="flex justify-end mb-4">
             <button
               onClick={openModal}
@@ -201,8 +197,6 @@ const DepartmentPage = () => {
               + Add New Department
             </button>
           </div>
-
-          {/* Department List Table */}
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="min-w-full text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -260,8 +254,6 @@ const DepartmentPage = () => {
                   Previous
                 </button>
               </li>
-
-              {/* Render page numbers */}
               {Array.from({ length: totalPages }, (_, index) => (
                 <li key={index}>
                   <button
@@ -378,8 +370,6 @@ const DepartmentPage = () => {
           </div>
         </div>
       )}
-
-      {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
         <div
           id="delete-modal"
