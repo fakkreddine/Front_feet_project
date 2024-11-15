@@ -1,16 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
-import Login from './layout/Login';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./Auth/AuthContext";
+import Login from './layout/Login';
 import Home from './layout/Home';
 import Signup from './layout/Signup';
 import ProtectRoute from "./Auth/ProtectRoute";
 import UserHome from './layout/UserHome';
 import TeacherPage from './layout/TeacherPage'; 
-import Aside from './component/Aside';
 import DepartmentPage from './layout/DepartmentPage'; 
-
+import SchedulePage from './layout/SchedulePage';
 
 function App() {
   return (
@@ -25,6 +23,7 @@ function App() {
             <Route path="/teachers" element={<ProtectRoute><TeacherPage /></ProtectRoute>} />
             <Route path="/students" element={<ProtectRoute><TeacherPage /></ProtectRoute>} />
             <Route path="/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
+            <Route path="/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
