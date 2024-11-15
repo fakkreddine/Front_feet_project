@@ -32,11 +32,26 @@ function App() {
             
             <Route path="/home" element={<ProtectRoute><Home></Home></ProtectRoute> }/>
         <Route path='/dash' element={<ProtectRoute><UserHome></UserHome><Dash></Dash></ProtectRoute> }/>
+
+
+        <Route path='/dash/teacher' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
+        
+       
+
+
         <Route path='/dash/teachers' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />  
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+
+
+
+        
+        
+      
+      
+   
 
     </div>
   );
