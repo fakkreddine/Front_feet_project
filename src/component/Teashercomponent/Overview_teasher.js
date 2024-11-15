@@ -4,7 +4,7 @@ import img from "../../assets/edit.png"
 import {Badge} from "antd"
 function Overview_teasher() {
   return (
-    <section class="p-4 md:ml-64  pt-20 bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+    <section class=" h-screen p-4 md:ml-64  pt-20 bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
