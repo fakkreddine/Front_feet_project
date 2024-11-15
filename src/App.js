@@ -7,6 +7,9 @@ import Home from './layout/Home';
 import Signup from './layout/Signup';
 import  ProtectRoute from "./Auth/ProtectRoute"
 import UserHome from './layout/UserHome';
+import Teacher from './layout/dashboardLayout/Teacher';
+
+import Dash from './component/Dash';
 
 function App() {
   return (
@@ -19,7 +22,13 @@ function App() {
         <Route path="/login" element={<Login ></Login>}/>
         <Route path="/signup" element={<Signup></Signup>}/>
         <Route path="/home" element={<ProtectRoute><Home></Home></ProtectRoute> }/>
-        <Route path="/dash" element={<ProtectRoute><UserHome></UserHome></ProtectRoute> }/>
+        <Route path='/dash' element={<ProtectRoute><UserHome></UserHome><Dash></Dash></ProtectRoute> }/>
+        <Route path='/dash/teacher' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
+        
+       
+
+
+        
         
       
       </Routes>
