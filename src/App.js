@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./Auth/AuthContext";
 import Login from './layout/Login';
-import Home from './layout/Home';
+import Home from './layout/home/Home';
 import Signup from './layout/Signup';
 import ProtectRoute from "./Auth/ProtectRoute";
 import UserHome from './layout/UserHome';
@@ -46,14 +46,14 @@ function App() {
 
         <Route path='/dash/teachers' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />  
-=======
-            <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
+
+            
             <Route path="/dash" element={<ProtectRoute><UserHome /></ProtectRoute>} />
             <Route path="/dash/teachers" element={<ProtectRoute><Teacher/></ProtectRoute>} />
             <Route path="/dash/students" element={<ProtectRoute><Teacher/></ProtectRoute>} />
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
             <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
-
+           
           </Routes>
         </BrowserRouter>
       </AuthProvider>
