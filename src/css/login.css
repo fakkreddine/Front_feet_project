@@ -1,3 +1,10 @@
+:root {
+    --main-back: #fcfcfc;
+    --secondary-back: #101b31;
+    --secondary-color: #2d4e86;
+    --highlited-color : #192c4d;
+  }
+
 .login-btn{
     background-color: var(--secondary-color);
 }

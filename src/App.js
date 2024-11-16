@@ -6,7 +6,7 @@ import Login from './layout/Login';
 import Signup from './layout/Signup';
 import ProtectRoute from "./Auth/ProtectRoute";
 import UserHome from './layout/UserHome';
-
+import Home from "./layout/home/Home"
 
 import Teacher from './layout/dashboardLayout/Teacher';
 
@@ -53,6 +53,7 @@ function App() {
             <Route path="/dash/students" element={<ProtectRoute><Teacher/></ProtectRoute>} />
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
             <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
+            <Route path="/home" element={<ProtectRoute><Home></Home></ProtectRoute>} />
            
           </Routes>
         </BrowserRouter>
