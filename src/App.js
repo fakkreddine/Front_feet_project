@@ -1,12 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import Login from './layout/Login';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./Auth/AuthContext";
+import Login from './layout/Login';
 import Home from './layout/Home';
 import Signup from './layout/Signup';
 import ProtectRoute from "./Auth/ProtectRoute";
 import UserHome from './layout/UserHome';
+
 
 import Teacher from './layout/dashboardLayout/Teacher';
 
@@ -14,8 +14,11 @@ import Dash from './component/Dash';
 
  
 import Aside from './component/Aside';
-import DepartmentPage from './layout/DepartmentPage'; 
 
+
+
+import DepartmentPage from './layout/DepartmentPage'; 
+import SchedulePage from './layout/SchedulePage';
 
 function App() {
   return (
@@ -28,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+
             
             
             
@@ -35,13 +39,21 @@ function App() {
         <Route path='/dash' element={<ProtectRoute><UserHome></UserHome><Dash></Dash></ProtectRoute> }/>
 
 
-        <Route path='/dash/teacher' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
+        <Route path='/dash/schedule' element={<ProtectRoute> <UserHome></UserHome><SchedulePage></SchedulePage> </ProtectRoute> }/>
         
        
 
 
         <Route path='/dash/teachers' element={<ProtectRoute> <UserHome></UserHome><Teacher></Teacher>  </ProtectRoute> }/>
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />  
+=======
+            <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
+            <Route path="/dash" element={<ProtectRoute><UserHome /></ProtectRoute>} />
+            <Route path="/dash/teachers" element={<ProtectRoute><Teacher/></ProtectRoute>} />
+            <Route path="/dash/students" element={<ProtectRoute><Teacher/></ProtectRoute>} />
+            <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
+            <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
+
           </Routes>
         </BrowserRouter>
       </AuthProvider>
