@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./Auth/AuthContext";
 import Login from './layout/Login';
-import Home from './layout/home/Home';
+
 import Signup from './layout/Signup';
 import ProtectRoute from "./Auth/ProtectRoute";
 import UserHome from './layout/UserHome';
@@ -35,7 +35,7 @@ function App() {
             
             
             
-            <Route path="/home" element={<ProtectRoute><Home></Home></ProtectRoute> }/>
+          
         <Route path='/dash' element={<ProtectRoute><UserHome></UserHome><Dash></Dash></ProtectRoute> }/>
 
 
