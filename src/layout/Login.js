@@ -8,16 +8,18 @@ import google from "../assets/google.png"
 import github from "../assets/github.png"
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 function Login() {
   const auth = getAuth();
+  let navigate=useNavigate()
   const {googleSignIn,githubSignIn,user,resetpass} =useAuth() ;
   let [email,setmail]=useState();
   let [password,setpassword]=useState();
  const handelsignInwidthgoogle =async() =>{
   try {
     await googleSignIn();
+    navigate("/dash")
   } catch (error) {
     
     
@@ -28,6 +30,7 @@ function Login() {
   try {
     let con =await githubSignIn();
     console.log(con)
+    navigate("/dash")
   } catch (error) {
     
     
