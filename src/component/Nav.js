@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function Nav() {
   let {user,logout} =useAuth() ; 
   const nvigate =useNavigate()
-  console.log(user.reloadUserInfo)
+  console.log(user)
   const onClick = ({ key }) => {
     if (key==4) {
       logout()
