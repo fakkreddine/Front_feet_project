@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         }
       }
-    },     1000); // Every 5 minutes
+    },     5000); // Every 5 minutes
 
     return () => clearInterval(intervalId);
   }, [user]);
