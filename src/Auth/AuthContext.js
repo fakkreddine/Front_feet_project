@@ -95,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
           console.error("Error refreshing token:", error.message);
           setUser(null);
+          setUserDetails({ role: null, sessionList: [] });
         }
       }
     },     5000); // Every 5 minutes
