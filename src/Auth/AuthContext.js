@@ -65,14 +65,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   const [userDetails, setUserDetails] = useState({ role: null, sessionList: [] });
-
+  
+  const setdetail =  (details) => {
+    try {
+      setUserDetails(details)
+    } catch (error) {
+      console.error("Error during sign-up:", error.message);
+    }
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const res = await axios.get(`http://localhost:8081/roles/${currentUser.uid}`);
-          setUser(currentUser);
+          const res = await axios.get(`http://localhost:8081/roles/${currentUser.uid}`).then((res)=>{
+            setUser(currentUser);
           setUserDetails({ role: res.data.roleUser, sessionList: res.data.sessionList });
+          console.log({ role: res.data.roleUser, sessionList: res.data.sessionList })
+          });
+        
         } catch (error) {
           console.error("Error fetching roles:", error.message);
         }
@@ -104,7 +114,7 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user,userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout }}>
+    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user,userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout ,setdetail}}>
       {children}
     </AuthContext.Provider>
   );
