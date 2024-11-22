@@ -114,8 +114,9 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user,userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout ,setdetail}}>
+    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user,userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout }}>
       {children}
+
     </AuthContext.Provider>
   );
 };
