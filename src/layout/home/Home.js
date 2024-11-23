@@ -18,6 +18,7 @@ function Home() {
   const { userDetails, setdetail,user } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
 
+  
   const showModal = () => {
     setIsModalOpen(true);
   };
