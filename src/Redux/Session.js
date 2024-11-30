@@ -9,7 +9,7 @@ export const Session = createSlice({
   reducers: {
     
     addSession: (state, action) => {
-      state.value += action.payload
+      state.value = action.payload
     }
   },
 })

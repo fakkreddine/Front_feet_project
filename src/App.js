@@ -19,6 +19,8 @@ import Aside from './component/Aside';
 
 import DepartmentPage from './layout/DepartmentPage'; 
 import SchedulePage from './layout/SchedulePage';
+import NotFound from './layout/NotFound';
+import Nav from './component/Nav';
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/notfound" element={<NotFound></NotFound>} />
 
             
             

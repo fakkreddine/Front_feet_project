@@ -3,7 +3,7 @@ import logo from "../assets/logo.png"
 import { useAuth } from '../Auth/AuthContext';
 import { Dropdown, Space } from 'antd';
 import logouticon from "../assets/turn-off.png"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Nav() {
   let {user,logout} =useAuth() ; 
   const nvigate =useNavigate()
@@ -80,12 +80,12 @@ function Nav() {
           </svg>
           <span class="sr-only">Toggle sidebar</span>
         </button>
-        
-          <img
+        <Link to={"/home"}>  <img
             src={logo}
             class="mr-3 h-10"
             alt="Logo"
-          />
+          /></Link>
+        
          
      
         

@@ -3,7 +3,9 @@ import axios from 'axios'
 import { User } from '@auth0/auth0-react'
 import { useAuth } from '../Auth/AuthContext'
 import { useSelector, useDispatch } from 'react-redux'
-import { addSession } from '../Redux/Session'
+import { addSession } from '../Redux/Session';
+import { Navigate, useNavigate } from 'react-router-dom'
+
 function SessionM(props) {
   const dispatch = useDispatch()
   let {user}=useAuth()
@@ -17,18 +19,19 @@ function SessionM(props) {
       console.error("Error fetching roles:", error.message);
     }
   },[])
-  console.log(props.item)
+  let navigate =useNavigate();
+  let red=()=>{
+    dispatch(addSession(props.item))
+    navigate("/dash")
+  }
   return (
-    <button onClick={dispatch(addSession(props.item))} className='h-40'>
-       <div className="absolute m-2 w-2/3"><span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+    <button onClick={red} className='h-40'  disabled={!props.item}>
+      
+<div  class="relative p-6  block   gap-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+<div className="absolute top-0 left-0 p-2 "><span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                 <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
                 Active
             </span> </div>
-<div  class=" p-6  block   gap-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-<div>
- 
-
-</div>
 <h5 class="  text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{session.universityName}</h5>
 <p class="font-normal text-gray-700 dark:text-gray-400">{session.year}/{parseInt(session.year)+1}</p>
 

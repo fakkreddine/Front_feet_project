@@ -1,7 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';  // Importing Link from react-router-dom
-
+import { useEffect } from 'react'
+import { Link, useNavigate, } from 'react-router-dom';  // Importing Link from react-router-dom
+import { useSelector, useDispatch } from 'react-redux'
 function Aside() {
+  const session = useSelector((state) => state.session)
+  let navigate =useNavigate()
+  useEffect(()=>{
+    console.log(session.value)
+    if (!session.value){
+      navigate("/home ")
+
+    }
+  },[]) 
   return (
     <aside
       className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
@@ -39,8 +49,8 @@ function Aside() {
         </form>
         <ul className="space-y-2">
           <li>
-            <a
-              href="#"
+            <Link to={"/dash"}
+              
               className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               <svg
@@ -53,8 +63,8 @@ function Aside() {
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
-              <span className="ml-3">Overview</span>
-            </a>
+            <span className="ml-3">Overview</span>
+            </Link>
           </li>
           <li>
           <Link

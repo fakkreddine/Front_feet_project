@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Aside from "../component/Aside";
 import Nav from "../component/Nav";
-
+import { useSelector, useDispatch } from 'react-redux'
 const DepartmentPage = () => {
   const [departments, setDepartments] = useState([]);
   const [newDepartment, setNewDepartment] = useState({
@@ -21,7 +21,7 @@ const DepartmentPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
-  const sessionId = "672a4903041299154d5f4da6";
+  const sessionId = useSelector((state) => state.session.value)
   const API_BASE_URL = "http://localhost:8081";
 
   useEffect(() => {

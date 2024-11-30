@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Stats from './Stats'
 import classes from "../assets/presentation.png"
 import student from "../assets/graduation.png"
@@ -13,7 +13,8 @@ import {Badge} from 'antd';
 
 import { Card } from 'antd'
 import {AnimatedTooltip} from './dashcomp/animated-tooltip'
-
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 function Dash() {
   const people = [
     {
@@ -59,6 +60,7 @@ function Dash() {
         "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3534&q=80",
     },
   ];
+  
    
   return (
     <main class="p-4 md:ml-64  pt-20 " style={{height:"100vh"}}>
