@@ -21,12 +21,16 @@ const DepartmentPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
-  const sessionId = useSelector((state) => state.session.value)
+  const sessionId = useSelector((state) => state.session.value  )
   const API_BASE_URL = "http://localhost:8081";
 
   useEffect(() => {
     fetchDepartments(sessionId);
-  }, [sessionId]);
+  }, [sessionId]);//ahmed ya bhim  nji n3almek react 
+
+  useEffect(() => {
+    fetchDepartments(sessionId);
+  }, []);
 
   const fetchDepartments = async (sessionId) => {
     try {
