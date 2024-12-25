@@ -10,3 +10,6 @@
     font-style: normal;
   }
   
+  .custom-tree .ant-tree-line {
+    border-color: #e5e7eb; /* Tailwind's gray-200 for lighter lines */
+  }
