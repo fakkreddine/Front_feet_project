@@ -221,7 +221,7 @@ const GroupManagement = () => {
               name="studentsFile"
               showUploadList={false}
               onChange={handleFileChange}
-              beforeUpload={() => false} // Disable auto-upload
+              beforeUpload={() => false}
             >
               <Button>Click to Upload</Button>
             </Upload>
