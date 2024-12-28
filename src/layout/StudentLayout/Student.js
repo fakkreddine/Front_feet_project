@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserHome from '../UserHome';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import Tree from '../../component/Student/Treecomp';
@@ -41,6 +41,10 @@ function Student() {
       }
     }
   };
+  useEffect(()=>{
+    
+    info&&changeSelection(info)
+  },[relode])
 
   return (
     <div className="h-screen w-screen">
