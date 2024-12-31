@@ -5,7 +5,7 @@ import sessionReducer from './Session'; // Ensure 'Session.js' exists in 'src/Re
 
 const store = configureStore({
   reducer: {
-    session: sessionReducer, // Add your reducer under a key (e.g., "session")
+    session: sessionReducer,
   },
 });
 

@@ -1,203 +1,165 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Aside from "../component/Aside";
 import Nav from "../component/Nav";
 
-function SchedulePage() {
-  const [loadingTimetable, setLoadingTimetable] = useState(false);
+const SchedulePage = () => {
+  const sessionId = useSelector((state) => state.session.value);
+  const [loading, setLoading] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [timetableData, setTimetableData] = useState(null);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
-  const [files, setFiles] = useState({
-    roomsFile: null,
-    professorsFile: null,
-    subjectsFile: null,
-    classesFile: null,
-    classSubjectsFile: null
-  });
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const flaskBaseURL = process.env.REACT_APP_FLASK_BASE_URL || "http://localhost:5000";
-  const staticSessionId = '672a4903041299154d5f4da6';
+  useEffect(() => {
+    if (!sessionId) {
+      setError("No session ID found.");
+      return;
+    }
 
-  const apiCall = async (endpoint, method = 'GET', body = null, isFile = false) => {
-    try {
-      const options = {
-        method,
-        headers: { 'Content-Type': isFile ? 'multipart/form-data' : 'application/json' },
-      };
+    const fetchGroups = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(`http://localhost:5000/sessions/${sessionId}`);
+        const session = response.data;
 
-      if (body) {
-        if (isFile) {
-          const formData = new FormData();
-          formData.append('file', body);
-          options.body = formData;
+        if (session?.department?.length > 0) {
+          const groupsList = session.department[0]?.groups || [];
+          setGroups(groupsList);
         } else {
-          options.body = JSON.stringify(body);
+          setError("No valid department data found.");
         }
+      } catch (err) {
+        setError("Failed to fetch session data.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const response = await fetch(`${flaskBaseURL}${endpoint}`, options);
-      if (!response.ok) {
-        throw new Error(`Request failed with status: ${response.status}`);
-      }
-      return await response.json();
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const handleFileUpload = (event, fileType) => {
-    const file = event.target.files[0];
-    if (file && file.size > 5 * 1024 * 1024) {
-      setError('File size exceeds the 5MB limit.');
-      return;
-    }
-
-    if (file && !file.name.endsWith('.csv')) {
-      setError('Only CSV files are allowed.');
-      return;
-    }
-
-    setFiles(prevFiles => ({
-      ...prevFiles,
-      [fileType]: file
-    }));
-  };
-
+    fetchGroups();
+  }, [sessionId]);
 
   const handleGenerateTimetable = async () => {
-    setLoadingTimetable(true);
-    setError(null);
-    setSuccessMessage('');
-
-    const requiredFiles = Object.values(files);
-    if (requiredFiles.some(file => !file)) {
-      setError('Please upload all required files first.');
-      setLoadingTimetable(false);
+    if (!sessionId) {
+      setError("Session ID is missing.");
       return;
     }
 
+    setLoading(true);
+    setError(null);
+    setSuccessMessage('');
     try {
-      const data = await apiCall(`/generate_timetable/${staticSessionId}`, 'POST', files.classSubjectsFile, true);
-      setSuccessMessage(data.message);
-      setIsModalVisible(true); 
+      await axios.post('http://localhost:5000/generate-timetable', { sessionId });
+      setSuccessMessage("Timetable generated successfully!");
     } catch (err) {
-      setError(err.message);
-      setIsModalVisible(true); 
+      setError("Failed to generate timetable.");
     } finally {
-      setLoadingTimetable(false);
+      setLoading(false);
     }
   };
 
+  const handleGroupChange = async (event) => {
+    const groupName = event.target.value;
+    setSelectedGroup(groupName);
+    setLoading(true);
+    setError(null);
+    setTimetableData(null);
 
-  const closeModal = () => {
-    setIsModalVisible(false);
+    try {
+      const response = await axios.get(`http://localhost:5000/get-timetable-by-group?groupName=${groupName}`);
+      setTimetableData(response.data.timetable);
+    } catch (err) {
+      setError("Failed to fetch timetable.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderTimetable = () => {
+    if (!timetableData) return <div className="text-gray-500 mt-4">No timetable available.</div>;
+
+    const timeSlots = [
+      "08:30 - 10:00", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30",
+    ];
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    return (
+      <table className="min-w-full table-auto mt-4 border-collapse border border-gray-200">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border">Time Slot</th>
+            {daysOfWeek.map((day) => (
+              <th key={day} className="px-4 py-2 border">{day}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {timeSlots.map((timeSlot) => (
+            <tr key={timeSlot}>
+              <td className="px-4 py-2 border">{timeSlot}</td>
+              {daysOfWeek.map((day) => {
+                const entries = timetableData[timeSlot]?.[day] || [];
+                return (
+                  <td key={day} className="px-4 py-2 border">
+                    {entries.length > 0 ? (
+                      entries.map((entry, index) => (
+                        <div key={index} className="mb-2">
+                          <strong>{entry.subject}</strong> <br />
+                          {entry.teacher} <br />
+                          {entry.room}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-gray-500">No classes scheduled</div>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
 
   return (
-    <div>
-      <Aside className="w-64 bg-gray-800 text-white" />
-      
-      <div className="flex-1 ml-64 p-6">
-        <Nav />
-        <br/><br/><br/><br/>
-        <h1 className="text-2xl mb-4">Schedule for Session</h1>
-
-        <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">File</th>
-                <th scope="col" className="px-6 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Room</th>
-                <td className="px-6 py-4">
-                  <input 
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, 'roomsFile')}
-                  />
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Professor</th>
-                <td className="px-6 py-4">
-                  <input 
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, 'professorsFile')}
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  />
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Subject</th>
-                <td className="px-6 py-4">
-                  <input 
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, 'subjectsFile')}
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  />
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Class</th>
-                <td className="px-6 py-4">
-                  <input 
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, 'classesFile')}
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  />
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Class Subject</th>
-                <td className="px-6 py-4">
-                  <input 
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, 'classSubjectsFile')}
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <>
+      <Nav />
+      <Aside />
+      <div className="container mx-auto p-4 pt-20 ml-64">
+        <h1 className="text-2xl font-bold">Schedule Page</h1>
+        <div className="mt-4">
+          <button
+            onClick={handleGenerateTimetable}
+            className={`p-2 rounded ${loading ? "bg-gray-500" : "bg-blue-500 text-white"}`}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Generate Timetable"}
+          </button>
+          {successMessage && <div className="text-green-500 mt-2">{successMessage}</div>}
+          {error && <div className="text-red-500 mt-2">{error}</div>}
         </div>
-
-        <div className="p-4 md:p-5 space-y-4">
-       
-          {error && <div className="text-red-500 mt-4">{error}</div>}
-          {successMessage && <div className="text-green-500 mt-4">{successMessage}</div>}
+        <div className="mt-4">
+          <select
+            value={selectedGroup}
+            onChange={handleGroupChange}
+            className="p-2 border rounded w-full max-w-sm"
+          >
+            <option value="">Select a group</option>
+            {groups.map((group) => (
+              <option key={group.groupName} value={group.groupName}>
+                {group.groupName}
+              </option>
+            ))}
+          </select>
         </div>
-
-        <br/><br/>
-
-        <button
-          onClick={handleGenerateTimetable}
-          disabled={loadingTimetable}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          {loadingTimetable ? 'Generating...' : 'Generate Timetable'}
-        </button>
+        {renderTimetable()}
       </div>
-
-      {isModalVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-            <h3 className="text-xl font-medium text-gray-900">{error ? 'Error' : 'Success'}</h3>
-            <p className="mt-2 text-gray-500">{error || successMessage}</p>
-            <button
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-              onClick={closeModal}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
-}
+};
 
 export default SchedulePage;
