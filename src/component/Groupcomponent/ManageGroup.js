@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ManageGroup = () => {
-  const { groupId } = useParams(); // Get the groupId from the URL
+  const { groupId } = useParams();
   const [groupDetails, setGroupDetails] = useState(null);
   const [programs, setPrograms] = useState([]);
   const [students, setStudents] = useState([]);
