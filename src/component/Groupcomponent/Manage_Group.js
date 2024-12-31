@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Form, message, Checkbox, Spin, Modal, Select, Upload } from 'antd';
+import { Button, Input, Form, message, Spin, Select, Modal, Checkbox } from 'antd';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { PlusOutlined } from '@ant-design/icons';
 
 const GroupManagement = () => {
   const sessionId = useSelector((state) => state.session.value);
   const [departments, setDepartments] = useState([]);
-  const [subjects, setSubjects] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [studentsFile, setStudentsFile] = useState(null);
-  const [programs, setPrograms] = useState([]);
+  const [numberGroups, setNumberGroups] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isProgramModalVisible, setIsProgramModalVisible] = useState(false);
-  const [isSubjectModalVisible, setIsSubjectModalVisible] = useState(false);
-  const [newProgramName, setNewProgramName] = useState('');
-  const [newProgramSubjects, setNewProgramSubjects] = useState([]);
-  const [newSubjectName, setNewSubjectName] = useState('');
-  const [newSubjectType, setNewSubjectType] = useState([]);  
-  const [newSubjectDuration, setNewSubjectDuration] = useState('');
+  const [subjects, setSubjects] = useState([]);
+  const [program, setPrograms] = useState([]);
+  const [groupId, setGroupId] = useState(null);
+  const [departmentId, setDepartmentId] = useState(null);
 
   const API_BASE_URL = 'http://localhost:8081';
 
@@ -49,125 +46,61 @@ const GroupManagement = () => {
   };
 
   const fetchSubjects = async () => {
-    setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/admin/session/${sessionId}/subjects`);
-      if (response.data && Array.isArray(response.data)) {
-        setSubjects(response.data);
+      const response = await axios.get(`http://localhost:5000/get-subjects?sessionId=${sessionId}`);
+      if (response.data && Array.isArray(response.data.subjects)) {
+        setSubjects(response.data.subjects);
       } else {
         message.warning('Subjects data is not in the expected format');
       }
     } catch (error) {
       console.error('Failed to fetch subjects:', error);
       message.error('Failed to fetch subjects');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleAddProgram = async () => {
-    if (subjects.length === 0) {
-      message.warning('Please wait for subjects to load before adding a program.');
-      return;
-    }
-    setIsProgramModalVisible(true); 
-  };
-
-  const handleAddSubject = () => {
-    setIsSubjectModalVisible(true); 
-  };
-
-  const handleProgramModalOk = () => {
-    if (!newProgramName || newProgramSubjects.length === 0) {
-      message.error('Please provide a program name and select at least one subject');
-      return;
-    }
-
-    const newProgram = {
-      programName: newProgramName,
-      selectedSubjects: newProgramSubjects,
-    };
-
-    setPrograms([...programs, newProgram]);  
-    setIsProgramModalVisible(false);  
-    setNewProgramName('');  
-    setNewProgramSubjects([]);  
-  };
-
-  const handleSubjectModalOk = async () => {
-    if (!newSubjectName || newSubjectType.length === 0 || !newSubjectDuration) {
-      message.error('Please provide a subject name, select a subject type, and specify the duration');
-      return;
-    }
-
+  const fetchGroupId = async () => {
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/admin/session/${sessionId}/subject`,
-        {
-          subjectName: newSubjectName,
-          type: newSubjectType.join(', '),
-          duration: newSubjectDuration,
-        }
-      );
-      if (response.data) {
-        setSubjects([...subjects, response.data]);
-        message.success('Subject added successfully');
-        setIsSubjectModalVisible(false);
-        setNewSubjectName('');
-        setNewSubjectType([]);
-        setNewSubjectDuration('');
+      const response = await axios.get(`http://localhost:5000/get-group-id`, {
+        params: {
+          groupName,
+          sessionId,
+          departmentId: selectedDepartment,
+        },
+      });
+      if (response.data && response.data.groupId) {
+        setGroupId(response.data.groupId);
+        setDepartmentId(selectedDepartment);
+        setIsProgramModalVisible(true);
       } else {
-        message.error('Failed to add subject');
+        message.error('Failed to fetch group ID');
       }
     } catch (error) {
-      console.error('Failed to add subject:', error);
-      message.error('Failed to add subject');
-    }
-  };
-
-  const handleModalCancel = () => {
-    setIsProgramModalVisible(false);
-    setIsSubjectModalVisible(false);
-  };
-
-  const handleProgramNameChange = (e) => {
-    setNewProgramName(e.target.value);
-  };
-
-  const handleSubjectsChange = (checkedValues) => {
-    setNewProgramSubjects(checkedValues);
-  };
-
-  const handleFileChange = (info) => {
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-      setStudentsFile(info.file.originFileObj);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
+      console.error('Failed to fetch group ID:', error);
+      message.error('Failed to fetch group ID');
     }
   };
 
   const handleAddGroup = async () => {
-    if (!selectedDepartment || !groupName || !studentsFile || programs.length === 0) {
+    if (!selectedDepartment || !groupName || numberGroups <= 0) {
       message.error('Please fill in all required fields');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('groupName', groupName);
-    formData.append('departmentId', selectedDepartment);
-    formData.append('studentsFile', studentsFile);
-    formData.append('programs', JSON.stringify(programs));
+    const groupData = {
+      groupName,
+      numberGroups,
+    };
 
     setLoading(true);
     try {
       const response = await axios.post(
         `${API_BASE_URL}/admin/session/${sessionId}/departments/${selectedDepartment}/groups`,
-        formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        groupData
       );
-      if (response.data) {
+      if (response.status === 200) {
         message.success('Group added successfully');
+        await fetchGroupId();
       } else {
         message.error('Failed to add group');
       }
@@ -179,15 +112,70 @@ const GroupManagement = () => {
     }
   };
 
+  const handleAddProgram = async () => {
+    if (!departmentId || !groupId) {
+      message.error('Department ID or Group ID is missing');
+      return;
+    }
+
+    const validPrograms = program.map((program) => {
+      const validSubjects = program.selectedSubjects.map((subjectId) => {
+        const subject = subjects.find((s) => s._id === subjectId);
+        if (subject) {
+          return {
+            subjectName: subject.subjectName,
+            duration: subject.duration,
+            recurrence: program.recurrence,
+          };
+        }
+        return null;
+      }).filter(Boolean);
+
+      return {
+        programName: program.programName,
+        subjects: validSubjects,
+        recurrence: program.recurrence,
+      };
+    }).filter((program) => program.subjects.length > 0);
+
+    if (validPrograms.length === 0) {
+      message.error('Please add at least one valid program with subjects');
+      return;
+    }
+
+    const requestData = { programs: validPrograms };
+
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/admin/session/${sessionId}/department/${departmentId}/group/${groupId}`,
+        requestData
+      );
+      if (response.data) {
+        message.success('Programs added successfully');
+        setPrograms([{ programName: '', selectedSubjects: [], recurrence: 0 }]);
+        setIsProgramModalVisible(false);
+      } else {
+        message.error('Failed to add programs');
+      }
+    } catch (error) {
+      console.error('Error occurred while adding programs:', error);
+      message.error('Failed to add programs');
+    }
+  };
+
+  const handleAddProgramSection = () => {
+    setPrograms([
+      ...program,
+      { programName: '', selectedSubjects: [], recurrence: 0 },
+    ]);
+  };
+
+  const handleRemoveProgramSection = (index) => {
+    setPrograms(program.filter((_, i) => i !== index));
+  };
+
   return (
-    <div
-      style={{
-        marginLeft: '250px',
-        padding: '20px',
-        backgroundColor: '#fff',
-        minHeight: '100vh',
-      }}
-    >
+    <div style={{ marginLeft: '250px', padding: '20px', backgroundColor: '#fff', minHeight: '100vh' }}>
       <h2>Add New Group</h2>
       {loading ? (
         <Spin size="large" />
@@ -198,7 +186,7 @@ const GroupManagement = () => {
               value={selectedDepartment}
               onChange={setSelectedDepartment}
               placeholder="Select Department"
-              disabled={departments.length === 0} 
+              disabled={departments.length === 0}
             >
               {departments.map((dept) => (
                 <Select.Option key={dept.departmentId} value={dept.departmentId}>
@@ -216,58 +204,14 @@ const GroupManagement = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Upload Students File" required>
-            <Upload
-              name="studentsFile"
-              showUploadList={false}
-              onChange={handleFileChange}
-              beforeUpload={() => false}
-            >
-              <Button>Click to Upload</Button>
-            </Upload>
+          <Form.Item label="Number of Groups" required>
+            <Input
+              type="number"
+              value={numberGroups}
+              onChange={(e) => setNumberGroups(Number(e.target.value))}
+              placeholder="Enter Number of Groups"
+            />
           </Form.Item>
-
-          <h3>Programs</h3>
-          {programs.length > 0 ? (
-            programs.map((program, index) => (
-              <div
-                key={index}
-                style={{
-                  marginBottom: '20px',
-                  padding: '10px',
-                  border: '1px solid #ddd',
-                }}
-              >
-                <Form.Item label="Program Name" required>
-                  <Input
-                    value={program.programName || ''} 
-                    disabled
-                    placeholder="Program Name"
-                  />
-                </Form.Item>
-                <Form.Item label="Subjects" required>
-                  <Checkbox.Group
-                    options={subjects.map((subject) => ({
-                      label: subject.subjectName,
-                      value: subject.subjectId,  
-                    }))} 
-                    value={program.selectedSubjects || []} 
-                    disabled
-                  />
-                </Form.Item>
-              </div>
-            ))
-          ) : (
-            <p>No programs added yet.</p>
-          )}
-          <Button type="dashed" onClick={handleAddProgram} style={{ marginTop: '20px' }}>
-            Add Program
-          </Button>
-
-          <h3>Subjects</h3>
-          <Button type="dashed" onClick={handleAddSubject} style={{ marginTop: '20px' }}>
-            Add Subject
-          </Button>
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
@@ -276,61 +220,73 @@ const GroupManagement = () => {
           </Form.Item>
         </Form>
       )}
-      <Modal
-        title="Add New Program"
-        visible={isProgramModalVisible}
-        onOk={handleProgramModalOk}
-        onCancel={handleModalCancel}
-      >
-        <Form layout="vertical">
-          <Form.Item label="Program Name">
-            <Input value={newProgramName} onChange={handleProgramNameChange} />
-          </Form.Item>
-          <Form.Item label="Select Subjects">
-            <Checkbox.Group
-              options={subjects.map((subject) => ({
-                label: subject.subjectName,
-                value: subject.subjectId,
-              }))}
-              value={newProgramSubjects}
-              onChange={handleSubjectsChange}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
 
       <Modal
-        title="Add New Subject"
-        visible={isSubjectModalVisible}
-        onOk={handleSubjectModalOk}
-        onCancel={handleModalCancel}
+        title="Add Programs and Assign Students"
+        visible={isProgramModalVisible}
+        onOk={handleAddProgram}
+        onCancel={() => setIsProgramModalVisible(false)}
+        okText="Add Programs"
       >
-        <Form layout="vertical">
-          <Form.Item label="Subject Name">
-            <Input
-              value={newSubjectName}
-              onChange={(e) => setNewSubjectName(e.target.value)}
-              placeholder="Enter Subject Name"
-            />
-          </Form.Item>
-          <Form.Item label="Subject Type">
-            <Checkbox.Group
-              options={[
-                { label: 'Lab', value: 'Lab' },
-                { label: 'Course', value: 'Course' },
-              ]}
-              value={newSubjectType}
-              onChange={(checkedValues) => setNewSubjectType(checkedValues)}
-            />
-          </Form.Item>
-          <Form.Item label="Subject Duration">
-            <Input
-              value={newSubjectDuration}
-              onChange={(e) => setNewSubjectDuration(e.target.value)}
-              placeholder="Enter Duration"
-            />
-          </Form.Item>
-        </Form>
+        {program.map((program, index) => (
+          <div key={index} style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '10px' }}>
+            <Form.Item label={`Program Name ${index + 1}`} required>
+              <Input
+                value={program.programName}
+                onChange={(e) =>
+                  setPrograms((prev) =>
+                    prev.map((p, i) =>
+                      i === index ? { ...p, programName: e.target.value } : p
+                    )
+                  )
+                }
+                placeholder="Enter Program Name"
+              />
+            </Form.Item>
+
+            <Form.Item label="Subjects" required>
+              <Checkbox.Group
+                options={subjects.map((subject) => ({
+                  label: `${subject.subjectName} (${subject.duration}, ${subject.type})`,
+                  value: subject._id,
+                }))}
+                value={program.selectedSubjects}
+                onChange={(selectedSubjects) => {
+                  setPrograms((prev) =>
+                    prev.map((p, i) =>
+                      i === index ? { ...p, selectedSubjects } : p
+                    )
+                  );
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item label="Recurrence" required>
+              <Input
+                type="number"
+                value={program.recurrence}
+                onChange={(e) =>
+                  setPrograms((prev) =>
+                    prev.map((p, i) =>
+                      i === index ? { ...p, recurrence: Number(e.target.value) } : p
+                    )
+                  )
+                }
+                placeholder="Enter Recurrence"
+              />
+            </Form.Item>
+
+            <Button
+              type="danger"
+              onClick={() => handleRemoveProgramSection(index)}
+            >
+              Remove Program
+            </Button>
+          </div>
+        ))}
+        <Button type="dashed" icon={<PlusOutlined />} onClick={handleAddProgramSection}>
+          Add Program Section
+        </Button>
       </Modal>
     </div>
   );

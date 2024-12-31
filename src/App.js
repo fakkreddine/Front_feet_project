@@ -14,8 +14,7 @@ import DepartmentPage from './layout/DepartmentPage';
 import SchedulePage from './layout/SchedulePage';
 import NotFound from './layout/NotFound';
 import Nav from './component/Nav';
-
-
+import ManageGroup from './component/Groupcomponent/ManageGroup'; // Import ManageGroup component
 
 function App() {
   return (
@@ -40,9 +39,9 @@ function App() {
             <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
             <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
 
-            {/* Add the route for OverviewG here */}
-            <Route path="/dash/Groups" element={<ProtectRoute><Groups /></ProtectRoute>} />
-
+            {/* Route for managing groups */}
+            <Route path="/dash/groups" element={<ProtectRoute><Groups /></ProtectRoute>} />
+            <Route path="/dash/groups/:groupId" element={<ProtectRoute><ManageGroup /></ProtectRoute>} /> {/* New Route */}
           </Routes>
         </BrowserRouter>
       </AuthProvider>
