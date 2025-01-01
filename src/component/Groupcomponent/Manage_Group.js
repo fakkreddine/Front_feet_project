@@ -5,7 +5,7 @@ import axios from 'axios';
 import { PlusOutlined } from '@ant-design/icons';
 
 const GroupManagement = () => {
-  const sessionId = useSelector((state) => state.session.value);
+  const sessionId = useSelector((state) => state.session.value).trim();
   const [departments, setDepartments] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
@@ -21,9 +21,11 @@ const GroupManagement = () => {
 
   useEffect(() => {
     if (!sessionId) {
+      
       message.error('Session ID is missing!');
       return;
-    }
+    } 
+    console.log(sessionId)
     fetchDepartments();
     fetchSubjects();
   }, [sessionId]);
@@ -146,11 +148,13 @@ const GroupManagement = () => {
     const requestData = { programs: validPrograms };
 
     try {
+      console.log(requestData)
       const response = await axios.post(
         `${API_BASE_URL}/admin/session/${sessionId}/department/${departmentId}/group/${groupId}`,
-        requestData
+        requestData.programs[0]
       );
       if (response.data) {
+        console.log(response.data)
         message.success('Programs added successfully');
         setPrograms([{ programName: '', selectedSubjects: [], recurrence: 0 }]);
         setIsProgramModalVisible(false);
