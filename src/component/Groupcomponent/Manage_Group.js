@@ -179,7 +179,7 @@ const GroupManagement = () => {
   };
 
   return (
-    <div style={{ marginLeft: '250px', padding: '20px', backgroundColor: '#fff', minHeight: '100vh' }}>
+    <div className=' ml-12 transition-all duration-300 peer-hover:ml-64' style={{  padding: '20px', backgroundColor: '#fff'}}>
       <h2>Add New Group</h2>
       {loading ? (
         <Spin size="large" />

@@ -3,6 +3,7 @@ import axios from "axios";
 import Aside from "../component/Aside";
 import Nav from "../component/Nav";
 import { useSelector, useDispatch } from 'react-redux'
+import Aside_v2 from "../component/Aside_v2";
 const DepartmentPage = () => {
   const [departments, setDepartments] = useState([]);
   const [newDepartment, setNewDepartment] = useState({
@@ -154,9 +155,9 @@ const DepartmentPage = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Nav />
-      <Aside className="w-64 bg-gray-800 text-white" />
+      <Aside_v2 className="w-64 bg-gray-800 text-white" />
 
-      <div className="flex-1 flex flex-col ml-64 p-6 overflow-y-auto">
+      <div className="flex-1 flex flex-col  p-6 overflow-y-auto m ml-24 transition-all duration-300 peer-hover:ml-64  h-screen">
         <br /> <br /> <br /> <br />
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
           Department Management

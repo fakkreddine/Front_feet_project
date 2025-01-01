@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import img from "../../assets/edit.png";
 import Nav from '../Nav'
 import Aside from '../Aside' 
+import Aside_v2 from '../Aside_v2';
 
 
 function OverviewG() {
@@ -62,17 +63,16 @@ function OverviewG() {
 
   return (
 
-    <div className="flex h-screen">
+    <div className=" h-screen  ">
 
-      <Aside />
+   
       
-      <div className="flex-1">
+      <div className="">
         <Nav />
         <br></br>
-        <br></br>
-        <br></br>
         
-        <section className="p-4 md:ml-64 pt-20 bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+        
+        <section className="  ml-12 transition-all duration-300 peer-hover:ml-64  h-screen     dark:bg-gray-900 ">
           <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
             <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
               <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">

@@ -22,7 +22,19 @@ function SessionM(props) {
   let navigate =useNavigate();
   let red=()=>{
     dispatch(addSession(props.item))
-    navigate("/dash")
+
+    if (props.role=="Teacher") {
+      navigate("/TeacherDashboard")
+      return 
+    }
+    if (props.role=="Student") {
+      navigate("/StudentDashboard")
+      return 
+    }
+    
+      navigate("/dash")
+    
+    
   }
   return (
     <button onClick={red} className='h-40'  disabled={!props.item}>

@@ -15,6 +15,7 @@ import { Card } from 'antd'
 import {AnimatedTooltip} from './dashcomp/animated-tooltip'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Aside_v2 from './Aside_v2'
 function Dash() {
   const people = [
     {
@@ -63,7 +64,8 @@ function Dash() {
   
    
   return (
-    <main class="p-4 md:ml-64  pt-20 " style={{height:"100vh"}}>
+    <><Aside_v2></Aside_v2>
+     <main class=" ml-24 mt-15 pt-14  transition-all duration-300   peer-hover:ml-64 h-screen  p-4   " style={{height:"100vh"}}>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 ">
       <div>
         <Stats img={classes}  text="Total Classes"></Stats>
@@ -111,6 +113,8 @@ function Dash() {
     </div>
     
   </main>
+    </>
+   
   )
 }
 

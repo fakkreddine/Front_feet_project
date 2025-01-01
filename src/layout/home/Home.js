@@ -6,6 +6,7 @@ import { useAuth } from '../../Auth/AuthContext';
 import { Modal, Button, message } from 'antd';
 import axios from 'axios';
 
+
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState('');
@@ -17,6 +18,7 @@ function Home() {
   const [days, setDays] = useState([]);
   const { userDetails, setdetail,user } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
+
 
   
   const showModal = () => {
@@ -35,9 +37,9 @@ function Home() {
       content: 'All the inputs are required!',
     });
   };
-
+ 
   const updaterole=(res)=>{
-    console.log(userDetails)
+   
     axios.put('http://localhost:8081/roles/update/'+user.uid,{
       ...userDetails,
       "sessionList": [
@@ -86,7 +88,8 @@ axios
 
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
+  };console.log("ff",userDetails)
+  
 
   return (
     <>
@@ -95,7 +98,7 @@ axios
         <div className=' h-4/5'>   <div className='flex w-full h-full justify-center items-center gap-5 '>
           
           <div className='flex flex-wrap gap-8 w-full h-full'>
-          <button
+          {userDetails.role=="Admin"&&<button
             onClick={showModal}
             className="flex flex-col items-center justify-center w-40 h-40 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
           >
@@ -103,8 +106,11 @@ axios
             <p className="font-normal text-gray-700 dark:text-gray-400">
               Add Session
             </p>
-          </button> {userDetails?.sessionList?.map((item, index) => (
-            <SessionM key={index} item={item} />
+          </button>}
+          
+          
+           {userDetails?.sessionList?.map((item, index) => (
+            <SessionM role={userDetails.role} key={index} item={item} />
           ))}</div>
          
         </div>

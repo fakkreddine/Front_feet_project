@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Aside from "../component/Aside";
 import Nav from "../component/Nav";
+import Aside_v2 from '../component/Aside_v2';
 
 const SchedulePage = () => {
   const sessionId = useSelector((state) => state.session.value);
@@ -128,7 +129,7 @@ const SchedulePage = () => {
   return (
     <>
       <Nav />
-      <Aside />
+      <Aside_v2 />
       <div className="container mx-auto p-4 pt-20 ml-64">
         <h1 className="text-2xl font-bold">Schedule Page</h1>
         <div className="mt-4">

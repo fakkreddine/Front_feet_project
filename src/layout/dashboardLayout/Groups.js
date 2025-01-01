@@ -3,6 +3,7 @@ import Nav from '../../component/Nav';
 import Aside from '../../component/Aside';
 import OverviewG from '../../component/Groupcomponent/OverviewG'; 
 import GroupManagement from '../../component/Groupcomponent/Manage_Group'; 
+import Aside_v2 from '../../component/Aside_v2';
 
 function Groups() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -18,15 +19,15 @@ function Groups() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className=" h-screen">
 
-      <Aside />
+      <Aside_v2  />
 
-      <div className="flex-1">
+      <div className=" mt-15 ml-24 transition-all duration-300 peer-hover:ml-64  h-screen">
  
         <Nav />
 
-        <div className="p-4 md:ml-64 pt-20 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-4  pt-20 border-b border-gray-200 dark:border-gray-700 ">
           <ul className="flex justify-center flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             <li className="me-2">
               <button

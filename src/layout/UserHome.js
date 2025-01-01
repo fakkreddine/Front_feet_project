@@ -10,7 +10,7 @@ function UserHome() {
   return (
     <div class="antialiased bg-gray-50 dark:bg-gray-900">
   <Nav></Nav>
-  <Aside_v2></Aside_v2>
+  
   
 
 
