@@ -70,7 +70,7 @@ const SchedulePage = () => {
     setTimetableData(null);
 
     try {
-      const response = await axios.get(`http://localhost:5000/get-timetable-by-group?groupName=${groupName}`);
+      const response = await axios.get(`http://localhost:5000/get-timetable-by-group?groupName=${groupName}&sessionId=${sessionId}`);
       setTimetableData(response.data.timetable);
     } catch (err) {
       setError("Failed to fetch timetable.");

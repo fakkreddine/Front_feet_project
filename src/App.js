@@ -16,6 +16,7 @@ import NotFound from './layout/NotFound';
 import Nav from './component/Nav';
 import ManageGroup from './component/Groupcomponent/ManageGroup'; // Import ManageGroup component
 import Student from './layout/StudentLayout/Student';
+import TeacherDash from './layout/dashboardTeacher/TeacherDash';
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
             {/* Route for managing groups */}
             <Route path="/dash/groups" element={<ProtectRoute><Groups /></ProtectRoute>} />
             <Route path="/dash/groups/:groupId" element={<ProtectRoute><ManageGroup /></ProtectRoute>} /> {/* New Route */}
+
+
+
+            <Route path="/TeacherDashboard" element={<ProtectRoute> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>
