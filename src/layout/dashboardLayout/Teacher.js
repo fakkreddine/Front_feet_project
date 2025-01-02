@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Nav from '../../component/Nav'
 import Aside from '../../component/Aside'
 import UserHome from '../UserHome'
+import Aside_v2 from '../../component/Aside_v2';
 
 import { Button } from 'antd'
 import Manage_Teacher from '../../component/Teashercomponent/Manage_Teacher'
@@ -13,9 +14,11 @@ import Overviewt from '../../component/Teashercomponent/OverviewT'
 function Teacher() {
   let [tabs,settabs]=useState(<Overviewt></Overviewt>)
   return (
-    <div>
+    <div className=" h-screen">
 
 
+<Aside_v2  />
+<Nav />
 <div class="p-4 md:ml-64  pt-20  border-b border-gray-200 dark:border-gray-700">
     <ul class="flex justify-center flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
         <li class="me-2 ">
