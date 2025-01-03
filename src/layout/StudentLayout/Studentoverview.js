@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import UploadStudent from './UploadStudent';
 
-function Studentoverview({ data, department, setData ,relode}) { // Accept setData as a prop to update data externally
+function Studentoverview({ leaf,data, department, setData ,relode}) { // Accept setData as a prop to update data externally
   const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -115,9 +115,9 @@ const updteStudent=async()=>{
   const filteredStudents = data?.students?.filter((student) =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+console.log("ff",data)
   return (
-    <> {data.students.length != 0 &&<ul class="flex justify-center flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+    <> {leaf &&<ul class="flex justify-center flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
     <li class="me-2 ">
         <button onClick={()=>{
           settab(false)
@@ -148,7 +148,7 @@ const updteStudent=async()=>{
 <section className="h-full  pt-2">
         
 
-      {data.students.length === 0 ? (
+      {!leaf ? (
         <div className="flex justify-center items-center h-full">
           <Empty description="No students found" />
         </div>

@@ -65,7 +65,7 @@ function Student() {
     <Breadcrumb.Item>{info.data.departemnt_name}</Breadcrumb.Item>
       <Breadcrumb.Item>{info.data.name}</Breadcrumb.Item>
   </Breadcrumb>)}
-            <Studentoverview relode={relodetable} department={department} data={selected}/>
+            <Studentoverview leaf={info.data?.isLeaf} relode={relodetable} department={department} data={selected}/>
             </div>
           ) : (
             <div className='flex justify-center items-center h-full'>  <Empty className=''  /></div>
