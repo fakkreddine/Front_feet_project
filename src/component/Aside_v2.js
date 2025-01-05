@@ -48,7 +48,7 @@ function Aside_v2() {
   </span>
 </Link>
 
-<Link to={"/dash/session"} className=" pl-6 flex items-center  w-full p-2 text-base font-medium text-gray-500 focus:outline-none transition-colors duration-100 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800  overflow-hidden group hover:text-blue-500  hover:bg-blue-100 dark:text-blue-400 dark:bg-gray-800">
+<Link to={"/dash/subjects"} className=" pl-6 flex items-center  w-full p-2 text-base font-medium text-gray-500 focus:outline-none transition-colors duration-100 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800  overflow-hidden group hover:text-blue-500  hover:bg-blue-100 dark:text-blue-400 dark:bg-gray-800">
   <div className="flex justify-center items-center w-10 h-10">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
@@ -56,7 +56,7 @@ function Aside_v2() {
             </svg>
   </div>
   <span className="ml-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transform translate-x-[-100%] transition-all duration-100 whitespace-nowrap">
-  Sessions
+  Subjects
   </span>
 </Link>
 <Link to={"/dash/students"} className=" pl-6 flex items-center  w-full p-2 text-base font-medium text-gray-500 focus:outline-none transition-colors duration-100 rounded-lg dark:text-gray-400 dark:hover:bg-gray-800  overflow-hidden group hover:text-blue-500  hover:bg-blue-100 dark:text-blue-400 dark:bg-gray-800">

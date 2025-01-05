@@ -17,6 +17,7 @@ import Nav from './component/Nav';
 import ManageGroup from './component/Groupcomponent/ManageGroup'; // Import ManageGroup component
 import Student from './layout/StudentLayout/Student';
 import TeacherDash from './layout/dashboardTeacher/TeacherDash';
+import Subject from './layout/subjects/Subject';
 
 function App() {
   return (
@@ -48,6 +49,10 @@ function App() {
 
 
             <Route path="/TeacherDashboard" element={<ProtectRoute> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
+            
+            <Route path="/dash/subjects" element={<ProtectRoute> <Subject></Subject></ProtectRoute>}></Route>
+
+
           </Routes>
         </BrowserRouter>
       </AuthProvider>
