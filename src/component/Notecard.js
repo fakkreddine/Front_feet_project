@@ -1,49 +1,81 @@
 import React from 'react';
-import { Tooltip } from 'antd';
-import { FaTag } from 'react-icons/fa'; // Tag icon
-import { CalendarOutlined } from '@ant-design/icons'; // Date icon
-import 'flowbite'; // If needed for additional utilities
-import "../css/note.css"; // Ensure your custom styles are in place
+import { DeleteOutlined } from '@ant-design/icons';
+import { Tag } from 'antd';
 
-function Notecard({ data }) {
-  // Determine whether the background is light or dark to adjust text color
-  const isDark = (color) => {
-    const hexColor = color.startsWith('#') ? color.substring(1) : color;
-    const rgb = parseInt(hexColor, 16); // Convert hex to RGB
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >>  8) & 0xff;
-    const b = (rgb >>  0) & 0xff;
-    const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b; // Calculate brightness
-    return brightness < 128;
+function Notecard({ data, onClick, onDelete }) {
+  // Determine the text color based on the background color
+  const textColor = data.color === "#ffffff" ? '#000' : '#fff';
+  // Determine the icon color based on the background color
+  const iconColor = data.color === "#ffffff" ? '#000' : '#fff';
+
+  // Function to calculate contrasting colors for tags
+  const getTagStyles = () => {
+    // If the background is dark, make tags lighter and vice versa
+    const isDark = parseInt(data.color.slice(1, 3), 16) * 0.3 +
+                   parseInt(data.color.slice(3, 5), 16) * 0.59 + 
+                   parseInt(data.color.slice(5, 7), 16) * 0.11 < 128;
+
+    return {
+      backgroundColor: isDark ? '#ffffff' : '#333333',
+      color: isDark ? '#333333' : '#ffffff',
+    };
   };
-
-  const textColor = isDark(data.color) ? 'text-white' : 'text-gray-900';
 
   return (
     <div
-      className={`w-full max-w-2xl p-6 rounded-2xl shadow-xl transition-all transform hover:scale-105 hover:shadow-2xl ${textColor}`}
-      style={{ backgroundColor: data.color }}
+      onClick={onClick}
+      className="cursor-pointer rounded-2xl shadow-2xl p-8 relative w-[30rem] transition-transform transform hover:scale-105"
+      style={{
+        backgroundColor: data.color,
+        transition: 'background-color 0.3s ease, transform 0.2s ease',
+      }}
     >
-      {/* Header with title and date */}
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-bold">{data.name || "Untitled Note"}</h3>
-        <Tooltip title={data.date} placement="topRight">
-          <span className="text-sm flex items-center gap-1">
-            <CalendarOutlined />
-            {data.date}
-          </span>
-        </Tooltip>
-      </div>
+      {/* Title */}
+      <h2 className="text-4xl font-extrabold" style={{ color: textColor }}>
+        {data.name}
+      </h2>
 
       {/* Description */}
-      <div className="mb-6">
-        <p className="text-base">{data.description || "No description available."}</p>
-      </div>
+      <p className="text-lg text-gray-700 mt-4" style={{ color: textColor }}>
+        {data.description}
+      </p>
 
-      {/* Tags */}
-      <div className="flex items-center gap-3 text-sm">
-        <FaTag />
-        {data.tags || "No Tags"}
+      {/* Date */}
+      <p className="text-sm text-gray-500 mt-2" style={{ color: textColor }}>
+        {data.date}
+      </p>
+
+      {/* Tags Section */}
+      {data.tags && data.tags.length > 0 && (
+        <div className="mt-6">
+          <div className="flex flex-wrap gap-3">
+            {data.tags.split(',').map((tag, index) => (
+              <Tag
+                key={index}
+                className="text-sm py-2 px-4 rounded-full shadow-md cursor-pointer transition-all duration-300 transform hover:scale-110"
+                style={{
+                  ...getTagStyles(),
+                  fontWeight: 'bold',
+                  transition: 'background-color 0.3s, transform 0.2s',
+                }}
+              >
+                {tag.trim()}
+              </Tag>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Icon */}
+      <div className="absolute top-4 right-4">
+        <DeleteOutlined
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent modal from opening when clicking delete
+            onDelete(); // Call the onDelete function passed as a prop
+          }}
+          className="cursor-pointer text-3xl transition-colors hover:text-red-600"
+          style={{ color: iconColor }}
+        />
       </div>
     </div>
   );
