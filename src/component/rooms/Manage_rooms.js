@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import "./Pag.css";
+import {ReloadOutlined} from "@ant-design/icons";
 
 const Manage_rooms = () => {
     const [rooms, setRooms] = useState([]);
@@ -167,19 +168,15 @@ const Manage_rooms = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-gray-50">
             <div
                 className="flex-1 flex flex-col p-6 overflow-y-auto m ml-24 transition-all duration-300 peer-hover:ml-64 h-screen">
-                <br/> <br/> <br/> <br/>
-                <h1 className="text-3xl font-bold text-gray-900 mb-6">
-                    Room Management
-                </h1>
                 <div className="bg-white p-6 rounded-md shadow-md w-full mx-auto border border-gray-200">
                     <form className="flex items-center max-w-lg mx-auto mb-4">
                         <label htmlFor="voice-search" className="sr-only">Search</label>
                         <div className="relative w-full">
                             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                <svg className="w-4 h-4 text-gray-400 dark:text-gray-300" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
                                           strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -197,18 +194,25 @@ const Manage_rooms = () => {
                         </div>
                     </form>
 
-                    <div className="flex justify-end mb-4">
+                    <div className="flex justify-end mb-4 space-x-2">
                         <button
                             onClick={openModal}
                             className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-300"
                         >
-                            + Add New Room
+                            + Add New Classroom
+                        </button>
+                        <button
+                            onClick={() => fetchRooms(sessionId)}
+                            className="flex items-center justify-center bg-white border text-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 gap-3"
+                        ><ReloadOutlined />
+                            Reload
                         </button>
                     </div>
 
+
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table className="min-w-full text-sm text-left text-gray-500">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                            <thead className="text-xs text-gray-400 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" className="px-4 py-3">ID</th>
                                 <th scope="col" className="px-4 py-3">Room Name</th>
@@ -373,7 +377,7 @@ const Manage_rooms = () => {
                 </div>
             </div>
         </div>
-            );
-            };
+    );
+};
 
-            export default Manage_rooms;
+export default Manage_rooms;
