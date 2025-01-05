@@ -8,6 +8,7 @@ import UserHome from './layout/UserHome';
 import Home from "./layout/home/Home";
 import Teacher from './layout/dashboardLayout/Teacher';
 import Groups from './layout/dashboardLayout/Groups';
+import Rooms from './layout/dashboardLayout/Rooms';
 import Dash from './component/Dash';
 import Aside from './component/Aside';
 import DepartmentPage from './layout/DepartmentPage';
@@ -38,7 +39,7 @@ function App() {
             <Route path="/dash" element={<ProtectRoute><UserHome /></ProtectRoute>} />
             <Route path="/dash/teachers" element={<ProtectRoute><Teacher /></ProtectRoute>} />
             <Route path="/dash/students" element={<ProtectRoute> <UserHome />   <Student /></ProtectRoute>} />
-           
+            <Route path="/dash/rooms" element={<ProtectRoute><Rooms /></ProtectRoute>} />
             <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
             <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
 
