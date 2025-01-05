@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Avatar, Badge, Empty, Dropdown, message ,Modal } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
-import { Menu } from "antd";
+import { Menu,Tooltip } from "antd";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import UploadStudent from './UploadStudent';
+import { PlusOutlined,ReloadOutlined  } from '@ant-design/icons';
+import {  Spin } from 'antd'; // Import Spin for loading indicator
 
 function Studentoverview({ leaf,data, department, setData ,relode}) { // Accept setData as a prop to update data externally
   const [searchTerm, setSearchTerm] = useState('');
@@ -154,7 +156,7 @@ console.log("ff",data)
         </div>
       ) : (
           tab?(<UploadStudent data={{sessionId:sessionId,department:department,group:data.groupId}}/>):(  <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
-            <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 relative w-full sm:rounded-lg overflow-hidden">
               <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div className="w-full md:w-1/2">
                   <form className="flex items-center">
@@ -188,6 +190,13 @@ console.log("ff",data)
                     </div>
                   </form>
                 </div>
+                <button onClick={relode }
+                    type="button"
+                    className="flex items-center justify-center bg-white border text-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 gap-3"
+                  >
+                   < ReloadOutlined/>
+                    Relode
+                  </button>
               </div>
 
               <div className="overflow-x-auto">
@@ -239,10 +248,16 @@ console.log("ff",data)
                           </div>
                         </th>
                         <td className="px-4 py-3">{student.cin}</td>
-                        <td className="px-4 py-3">{student.id}</td>
+                        <td className="px-4 py-3">{student.id}<Tooltip title="ID in mongodb">  <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold    rounded-full dark:bg-gray-700 dark:text-blue-400">
+<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+</svg>
+<span class="sr-only">Icon description</span>
+</span></Tooltip></td>
                         <td className="px-4 py-3">{student.group}</td>
                         <td>
-                          <Badge status="success" /> Active
+                        <span class=" flex justify-center items-center gap-1 bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Active <Badge status="success" /> </span>
+                          
                         </td>
                         <td className="py-5 flex items-center justify-center">
                           <button

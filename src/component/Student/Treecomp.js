@@ -3,7 +3,8 @@ import { Tree } from 'antd';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { DownOutlined, FolderOpenFilled, FileFilled } from '@ant-design/icons';
-
+import { PlusOutlined,DeleteFilled,ReloadOutlined  } from '@ant-design/icons';
+import { Empty, Spin } from 'antd'; // Import Spin for loading indicator
 const { TreeNode } = Tree;
 
 const TreeComp = memo(({ selected ,relode}) => {
@@ -99,13 +100,7 @@ const TreeComp = memo(({ selected ,relode}) => {
     ));
   }, [departments]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center p-5 text-blue-500 font-semibold">
-        Loading tree...
-      </div>
-    );
-  }
+  
 
   const onSelect = (selectedKeys, info) => {
     if (info.node) {
@@ -121,7 +116,10 @@ const TreeComp = memo(({ selected ,relode}) => {
   };
 
   return (
-    <div className="p-5 border-r border-gray-200 w-64 h-full bg-white">
+    <div className="  px-1 border-gray-200 p-5 border-r border-gray-200 w-64 h-full bg-white">
+      {loading?<div className="relative flex justify-center py-10">
+        <Spin size="large" />
+      </div>:
       <Tree
         showIcon
         showLine
@@ -134,7 +132,7 @@ const TreeComp = memo(({ selected ,relode}) => {
         <TreeNode title="Departments" key="dep" icon={<FolderOpenFilled className="text-blue-600 text-xl" />}>
           {renderDepartments()}
         </TreeNode>
-      </Tree>
+      </Tree>}
     </div>
   );
 });

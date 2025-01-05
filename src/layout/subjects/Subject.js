@@ -225,9 +225,9 @@ try {
 
 
 
-        <section className="dark:bg-gray-900 p-3 sm:p-5">
-          <div className="mx-auto">
-            <div className="bg-white box-shadow dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <section className=" dark:bg-gray-900 p-3 sm:p-5">
+          <div className="mx-auto border shadow-md rounded-lg border-gray-200 p-6  ">
+            <div className="bg-white  dark:bg-gray-800 relative   overflow-hidden">
               <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div className="w-full md:w-1/2">
                   <form className="flex items-center">
@@ -277,13 +277,13 @@ try {
                   </button>
                 </div>
               </div>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto ">
                 {loading ? ( // Check loading state
                   <div className="flex justify-center py-10">
                     <Spin size="large" />
                   </div>
                 ) : (
-                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <table className="  w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <th scope="col" className="px-4 py-3">

@@ -155,11 +155,11 @@ function Manage_Teacher() {
   };
 
   return (
-    <div className='h-screen p-4 md:ml-64 pt-20 bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>
+    <div className=''>
       {uploading ? (
         <h1>Uploading...</h1>
       ) : (
-        <div className="w-full flex flex-col justify-center items-center max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+        <div className=" flex flex-col justify-center items-center max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
           <FileUpload onChange={handleFileUpload} />
           {files.length !== 0 && (
             <button

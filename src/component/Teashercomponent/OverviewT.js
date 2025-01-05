@@ -1,45 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Spin } from 'antd';
+import { Avatar, Badge, Spin,Tooltip } from 'antd';
 import img from "../../assets/edit.png";
 import { useSelector } from 'react-redux';
-
+import { PlusOutlined,DeleteFilled,ReloadOutlined  } from '@ant-design/icons';
 
 function Overviewt() {
     const sessionId = useSelector((state) => state.session.value);
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const fetchTeachers = async () => {
+    setLoading(true);
+    setError(null);
 
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetch(`http://localhost:8081/admin/session/${sessionId}/teachers`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch teachers');
-        }
-
-        const data = await response.json();
-        setTeachers(data || []);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+    try {
+      const response = await fetch(`http://localhost:8081/admin/session/${sessionId}/teachers`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch teachers');
       }
-    };
+
+      const data = await response.json();
+      setTeachers(data || []);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    
 
     fetchTeachers();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spin size="large" />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -50,9 +43,9 @@ function Overviewt() {
   }
 
   return (
-    <section className="peer">
-      <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
-        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+    <section className=" shadow-lg border border-gray-200 rounded-lg p-6 mr-7 ">
+      <div className="px-6">
+        <div className="overflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div className="w-full md:w-1/2">
               <form className="flex items-center">
@@ -83,8 +76,19 @@ function Overviewt() {
                 </div>
               </form>
             </div>
+            <button onClick={fetchTeachers}
+                    type="button"
+                    className="flex items-center justify-center bg-white border text-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 gap-3"
+                  >
+                   < ReloadOutlined/>
+                    Relode
+                  </button>
           </div>
           <div className="overflow-x-auto">
+
+            {loading?<div className=" relative flex justify-center py-10">
+                                  <Spin size="large" />
+                                </div>:
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -97,8 +101,10 @@ function Overviewt() {
                   <th scope="col" className="px-4 py-3">Status</th>
                 </tr>
               </thead>
+
               <tbody>
-                {teachers.map((teacher, index) => (
+
+                { teachers.map((teacher, index) => (
                   <tr key={index} className="border-b dark:border-gray-700">
                     <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       <div className="flex gap-4 items-center">
@@ -110,18 +116,26 @@ function Overviewt() {
                       </div>
                     </th>
                     <td className="px-4 py-3">{teacher.cin}</td>
-                    <td className="px-4 py-3">{teacher.id}</td>
+                    <td className="px-4 py-3">{teacher.id }<Tooltip title="ID in mongodb">  <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold    rounded-full dark:bg-gray-700 dark:text-blue-400">
+<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+</svg>
+<span class="sr-only">Icon description</span>
+</span></Tooltip></td>
                     <td className="px-4 py-3">{teacher.email}</td>
-                    <td className="px-4 py-3">{teacher.subjectsCanTeach || 'N/A'}</td>
-                    <td className="px-4 py-3">{teacher.timeSlots || 'N/A'}</td>
+                    <td className="px-4 py-3 "><span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"> {teacher.subjectsCanTeach || 'N/A'}</span></td>
+                    <td className="px-4 py-3"><span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">{teacher.timeSlots || 'N/A'}</span></td>
                     <td className="px-4 py-3">
-                      <Badge status={teacher.valide ? 'success' : 'error'} />
-                      {teacher.valide ? 'Active' : 'Inactive'}
+
+                    <span class={teacher.valide?"bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300":"bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"}>{teacher.valide ? 'Active' : 'Inactive'} 
+                    </span>
+
+                     
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table>}
           </div>
         </div>
       </div>

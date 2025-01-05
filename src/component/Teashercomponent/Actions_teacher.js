@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Modal, Form, Input, Switch, message } from 'antd';
 import img from '../../assets/edit.png';
 import { useSelector } from 'react-redux';
-
+import {  Badge, Spin } from 'antd';
+import { PlusOutlined,DeleteFilled,ReloadOutlined  } from '@ant-design/icons';
 function Actions_teacher() {
   const sessionId = useSelector((state) => state.session.value);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,23 +11,23 @@ function Actions_teacher() {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`http://localhost:8081/admin/session/${sessionId}/teachers`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch teachers');
-        }
-        const data = await response.json();
-        setTeachers(data);
-      } catch (error) {
-        message.error(error.message);
-      } finally {
-        setLoading(false);
+  const fetchTeachers = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:8081/admin/session/${sessionId}/teachers`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch teachers');
       }
-    };
+      const data = await response.json();
+      setTeachers(data);
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    
 
     fetchTeachers();
   }, [sessionId]);
@@ -106,15 +107,26 @@ function Actions_teacher() {
   };
 
   return (
-    <section className="h-screen p-4 md:ml-64 pt-20 bg-gray-50 dark:bg-gray-900">
-      <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
-        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+    <section className="p-6 shadow-lg border border-gray-200 rounded-lg mr-6">
+      <div className="">
+        <div className="bg-white dark:bg-gray-800 relativeoverflow-hidden">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div className="w-full md:w-1/2">
               <Input.Search placeholder="Search" />
             </div>
+            <button onClick={fetchTeachers}
+                    type="button"
+                    className="flex items-center justify-center bg-white border text-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 gap-3"
+                  >
+                   < ReloadOutlined/>
+                    Relode
+                  </button>
           </div>
           <div className="overflow-x-auto">
+
+            {loading?<div className=" relative flex justify-center py-10">
+                  <Spin size="large" />
+                </div>:
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -125,13 +137,7 @@ function Actions_teacher() {
                 </tr>
               </thead>
               <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan="4" className="text-center py-4">
-                      Loading...
-                    </td>
-                  </tr>
-                ) : (
+                {
                   teachers.map((teacher) => (
                     <tr key={teacher.id} className="border-b dark:border-gray-700">
                       <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -161,9 +167,9 @@ function Actions_teacher() {
                       </td>
                     </tr>
                   ))
-                )}
+              }
               </tbody>
-            </table>
+            </table>}
           </div>
         </div>
       </div>

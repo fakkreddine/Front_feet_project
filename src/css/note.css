@@ -10,3 +10,36 @@
 .note{
     max-width: 30%;
 }
+.note-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .note-card {
+    padding: 1rem;
+    width: 20rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .note-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d2d2d;
+  }
+  
+  .note-card p {
+    color: #666;
+  }
+  
+  .note-card .note-date {
+    color: #999;
+  }
+  
+  .note-card .note-date {
+    font-size: 0.875rem;
+  }
+  

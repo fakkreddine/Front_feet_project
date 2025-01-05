@@ -3,7 +3,7 @@ import { Button, Input, Form, message, Spin, Select, Modal, Checkbox } from 'ant
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { PlusOutlined } from '@ant-design/icons';
-
+import {DeleteFilled,ReloadOutlined  } from '@ant-design/icons';
 const GroupManagement = () => {
   const sessionId = useSelector((state) => state.session.value).trim();
   const [departments, setDepartments] = useState([]);
@@ -179,11 +179,24 @@ const GroupManagement = () => {
   };
 
   return (
-    <div className=' ml-12 transition-all duration-300 peer-hover:ml-64' style={{  padding: '20px', backgroundColor: '#fff'}}>
-      <h2>Add New Group</h2>
+    <div className='' style={{  padding: '20px', backgroundColor: '#fff'}}>
+      <div className=" p-5 flex justify-between">  <h2>Add New Group</h2>
+      <button  onClick={()=>{fetchDepartments();
+    fetchSubjects();}}
+                    type="button"
+                    className="flex items-center justify-center bg-white border text-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 gap-3"
+                  >
+                   < ReloadOutlined/>
+                    Relode
+                  </button></div>
+    
+      <div className="flex justify-center align-middle">
       {loading ? (
-        <Spin size="large" />
+        <div className="relative flex justify-center py-10">
+                <Spin size="large" />
+              </div>
       ) : (
+        <div className="w-3/4 p-10">
         <Form layout="vertical" onFinish={handleAddGroup}>
           <Form.Item label="Select Department" required>
             <Select
@@ -218,11 +231,11 @@ const GroupManagement = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button className='w-full' type="primary" htmlType="submit">
               Add Group
             </Button>
           </Form.Item>
-        </Form>
+        </Form></div>
       )}
 
       <Modal
@@ -292,7 +305,7 @@ const GroupManagement = () => {
           Add Program Section
         </Button>
       </Modal>
-    </div>
+    </div></div>
   );
 };
 
