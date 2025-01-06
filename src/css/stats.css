@@ -1,0 +1,12 @@
+/* Fade-in effect for smooth transition */
+.stats-container .fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .stats-container .fade-in-loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  

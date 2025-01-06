@@ -5,7 +5,7 @@ function Aside_v2_teacher() {
   return (
     
     <aside   
-   class={`fixed top-0 left-0 z-40 overflow-hidden  h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700 peer h-screen bg-gray-800 w-20 transition-all duration-300 hover:w-64  group `}>
+   class={`fixed top-0 left-0 z-40 overflow-hidden   transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700 peer h-screen bg-gray-800 w-20 transition-all duration-300 hover:w-64  group `}>
     
     <div class="flex flex-col items-start peer w-16  hover:w-64 h-screen py-8 space-y-8 bg-white dark:bg-gray-900 dark:border-gray-700">
        
