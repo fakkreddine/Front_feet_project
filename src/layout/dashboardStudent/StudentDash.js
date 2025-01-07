@@ -27,7 +27,7 @@ const StudentDash = () => {
         try {
 
             const { data: Grouprep } = await axios.get(
-                `http://localhost:5000/get-group-by-student-id?studentId=${user.reloadUserInfo.localId}&sessionId=${sessionId}`
+                `http://localhost:5000/get-group-by-student-id?studentId=PGJrXnJgNPe4sBdoHpqHLevL4BB2&sessionId=${sessionId}`
             );
             setStudentInfo(Grouprep);
 
