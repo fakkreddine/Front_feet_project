@@ -19,6 +19,7 @@ import ManageGroup from './component/Groupcomponent/ManageGroup'; // Import Mana
 import Student from './layout/StudentLayout/Student';
 import TeacherDash from './layout/dashboardTeacher/TeacherDash';
 import Subject from './layout/subjects/Subject';
+import StudentDash from "./layout/dashboardStudent/StudentDash";
 
 function App() {
   return (
@@ -50,7 +51,7 @@ function App() {
 
 
             <Route path="/TeacherDashboard" element={<ProtectRoute> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
-            
+            <Route path="/StudentDashboard" element={<ProtectRoute> <StudentDash></StudentDash></ProtectRoute>}></Route>
             <Route path="/dash/subjects" element={<ProtectRoute> <Subject></Subject></ProtectRoute>}></Route>
 
 
