@@ -27,6 +27,8 @@
     "framer-motion": "^11.15.0",
     "fullcalendar": "^6.1.15",
     "google-auth-library": "^9.14.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.7.0",
