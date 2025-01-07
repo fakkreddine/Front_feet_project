@@ -125,8 +125,12 @@ const GroupManagement = () => {
         const subject = subjects.find((s) => s._id === subjectId);
         if (subject) {
           return {
-            subjectName: subject.subjectName,
-            duration: subject.duration,
+
+            "subject": {
+              "subjectName": subject.subjectName,
+              "duration":subject.duration
+            }, 
+            
             recurrence: program.recurrence,
           };
         }
@@ -148,7 +152,7 @@ const GroupManagement = () => {
     const requestData = { programs: validPrograms };
 
     try {
-      console.log(requestData)
+      console.log(requestData.programs[0])
       const response = await axios.post(
         `${API_BASE_URL}/admin/session/${sessionId}/department/${departmentId}/group/${groupId}`,
         requestData.programs[0]
