@@ -1,30 +1,31 @@
-  import React from 'react'
+import React, { useEffect, useState } from 'react';
+import "../css/loder.css";
+import { useAuth } from './AuthContext';
+import Login from '../layout/Login';
 
-import "../css/loder.css"
-  import { useAuth } from './AuthContext';
-  import Login from '../layout/Login';
-  function ProtectRoute({ children}) {
+function ProtectRoute({ children }) {
+  const { user, auth, Loding } = useAuth();
+  const [isLoaded, setIsLoaded] = useState(false);
 
-      let {user,auth,Loding} =useAuth() ;
-      const loder=()=>{
-  if (Loding) {
-  
-    return (<div className='cont'  >
-      <div className='loader'></div>
-    </div>)
-    
-  }else{
-    return user?children:<Login></Login>
-  }
+  useEffect(() => {
+    if (!Loding) {
+      setIsLoaded(true); // Set to true once loading is complete
+    }
+  }, [Loding]);
 
-      }
-      
-    return (
-    <>
-    {(loder())}
-    </>
-      
-    ) ;
-  }
+  const loader = () => {
+    if (Loding || !isLoaded) {
+      return (
+        <div className="cont">
+          <div className="loader"></div>
+        </div>
+      );
+    } else {
+      return user ? children : <Login />;
+    }
+  };
 
-  export default ProtectRoute
+  return <>{loader()}</>;
+}
+
+export default ProtectRoute;
