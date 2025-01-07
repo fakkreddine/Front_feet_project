@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Spin } from 'antd';
-import Aside_v2 from '../component/Aside_v2';
-import Nav from "../component/Nav";
 import { Link } from 'react-router-dom';
+import Nav from "../component/Nav";
+import Aside_v2 from '../component/Aside_v2';
 
 const Loader = () => (
     <div className="flex justify-center items-center h-full">
@@ -94,32 +93,28 @@ const SchedulePage = () => {
   };
 
   const renderTimetable = () => {
-    if (!timetableData || timetableData.length === 0) {
+    if (!Array.isArray(timetableData) || timetableData.length === 0) {
       return <div className="text-gray-500 mt-4">No timetable available.</div>;
     }
 
     const timeSlots = [
-      "08:30 - 10:00", "10:00 - 11:30", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"
+      "08:30 - 10:00", "10:00 - 11:30", "11:30 - 13:00",
+      "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"
     ];
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    // Helper function to split time slots
     const splitTimeSlot = (entry) => {
       const { time_slot, ...rest } = entry;
       const [start, end] = time_slot.split(" - ");
-      const splitSlots = [];
-
-      for (let i = 0; i < timeSlots.length; i++) {
-        const [slotStart, slotEnd] = timeSlots[i].split(" - ");
-        if (start < slotEnd && end > slotStart) {
-          splitSlots.push({ ...rest, time_slot: timeSlots[i] });
-        }
-      }
-
-      return splitSlots;
+      return timeSlots.filter((slot) => {
+        const [slotStart, slotEnd] = slot.split(" - ");
+        return start < slotEnd && end > slotStart;
+      }).map((slot) => ({ ...rest, time_slot: slot }));
     };
 
-    const processedTimetableData = timetableData.flatMap(splitTimeSlot);
+    const processedTimetableData = Array.isArray(timetableData)
+        ? timetableData.flatMap(splitTimeSlot)
+        : [];
 
     const groupedTimetable = processedTimetableData.reduce((acc, item) => {
       if (!acc[item.group_name]) {
@@ -148,7 +143,9 @@ const SchedulePage = () => {
                       <tr key={timeSlot}>
                         <td className="px-4 py-2 border">{timeSlot}</td>
                         {daysOfWeek.map((day) => {
-                          const entries = groupedTimetable[group].filter(entry => entry.time_slot === timeSlot && entry.day === day);
+                          const entries = groupedTimetable[group].filter(
+                              (entry) => entry.time_slot === timeSlot && entry.day === day
+                          );
                           return (
                               <td key={day} className="px-4 py-2 border">
                                 {entries.length > 0 ? (
