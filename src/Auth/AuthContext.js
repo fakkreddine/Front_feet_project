@@ -6,13 +6,14 @@ import {
   signOut, getAuth 
 } from "firebase/auth";
 import axios from "axios";
-import { auth } from "./firebase"; // Ensure auth setup is correct in ./firebase
+import { auth } from "./firebase"; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState({ role: null, sessionList: [] });
 
   const logout = async () => {
     try {
@@ -64,25 +65,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const [userDetails, setUserDetails] = useState({ role: null, sessionList: [] });
-  
-  const setdetail =  (details) => {
+  const setdetail = (details) => {
     try {
-      setUserDetails(details)
+      setUserDetails(details);
     } catch (error) {
-      console.error("Error during sign-up:", error.message);
+      console.error("Error setting user details:", error.message);
     }
   };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const res = await axios.get(`http://localhost:8081/roles/${currentUser.uid}`).then((res)=>{
-            setUser(currentUser);
+          const res = await axios.get(`http://localhost:8081/roles/${currentUser.uid}`);
+          setUser(currentUser);
           setUserDetails({ role: res.data.roleUser, sessionList: res.data.sessionList });
-          console.log({ role: res.data.roleUser, sessionList: res.data.sessionList })
-          });
-        
+          console.log({ role: res.data.roleUser, sessionList: res.data.sessionList });
         } catch (error) {
           console.error("Error fetching roles:", error.message);
         }
@@ -92,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       }
       setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
@@ -108,15 +106,14 @@ export const AuthProvider = ({ children }) => {
           setUserDetails({ role: null, sessionList: [] });
         }
       }
-    },     5000); // Every 5 minutes
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user,userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout,setdetail }}>
-      {children}
-
+    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user, userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout, setdetail }}>
+      {loading ? null : children}  {/* Ensure content is only rendered after loading is done */}
     </AuthContext.Provider>
   );
 };
