@@ -19,7 +19,7 @@ function Login() {
  const handelsignInwidthgoogle =async() =>{
   try {
     await googleSignIn();
-    navigate("/dash")
+    navigate("/home")
   } catch (error) {
     
     
