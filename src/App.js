@@ -21,7 +21,7 @@ import TeacherDash from './layout/dashboardTeacher/TeacherDash';
 import Subject from './layout/subjects/Subject';
 import Init from './component/Init';
 import StudentDash from "./layout/dashboardStudent/StudentDash";
-
+import 'flowbite';
 function App() {
   return (
     <div className="App">
