@@ -130,7 +130,7 @@ function Home() {
                     </div>
                   ))
                 : userDetails?.sessionList?.map((item, index) => (
-                    <SessionM role={userDetails.role} key={index} item={item} />
+                    <SessionM role={userDetails} key={index} item={item} />
                   ))}
             </div>
           </div>

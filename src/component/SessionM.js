@@ -22,7 +22,7 @@ function SessionM(props) {
   let navigate =useNavigate();
   let red=()=>{
     dispatch(addSession(props.item))
-
+    console.log("ff",props.role)
     if (props.role=="Teacher") {
       navigate("/TeacherDashboard")
       return 
@@ -37,7 +37,7 @@ function SessionM(props) {
     
   }
   return (
-    <button onClick={red} className='h-40'  disabled={!props.item}>
+    <button onClick={()=>{red()}} className='h-40'  disabled={!props.item}>
       
 <div  class="relative p-6  block   gap-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
 <div className="absolute top-0 left-0 p-2 "><span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
