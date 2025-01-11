@@ -9,10 +9,11 @@ import Home from "./layout/home/Home";
 import Teacher from './layout/dashboardLayout/Teacher';
 import Groups from './layout/dashboardLayout/Groups';
 import Rooms from './layout/dashboardLayout/Rooms';
+import Scheduale from './layout/dashboardLayout/Scheduale';
 import Dash from './component/Dash';
 import Aside from './component/Aside';
 import DepartmentPage from './layout/DepartmentPage';
-import SchedulePage from './layout/SchedulePage';
+
 import NotFound from './layout/NotFound';
 import Nav from './component/Nav';
 import ManageGroup from './component/Groupcomponent/ManageGroup'; // Import ManageGroup component
@@ -35,14 +36,14 @@ function App() {
 
             {/* ProtectRoute wrapper added for secure routes */}
             <Route path='/dash' element={<ProtectRoute><UserHome /><Dash /></ProtectRoute>} />
-            <Route path='/dash/schedule' element={<ProtectRoute><UserHome /><SchedulePage /></ProtectRoute>} />
+            <Route path='/dash/schedule' element={<ProtectRoute><UserHome /><Scheduale /></ProtectRoute>} />
             <Route path='/dash/teachers' element={<ProtectRoute><UserHome /><Teacher /></ProtectRoute>} />
             <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
             <Route path="/dash" element={<ProtectRoute><UserHome /></ProtectRoute>} />
             <Route path="/dash/teachers" element={<ProtectRoute><Teacher /></ProtectRoute>} />
             <Route path="/dash/students" element={<ProtectRoute> <UserHome />   <Student /></ProtectRoute>} />
             <Route path="/dash/rooms" element={<ProtectRoute><Rooms /></ProtectRoute>} />
-            <Route path="/dash/schedule" element={<ProtectRoute><SchedulePage /></ProtectRoute>} />
+            <Route path="/dash/schedule" element={<ProtectRoute><Scheduale /></ProtectRoute>} />
             <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
 
             {/* Route for managing groups */}
