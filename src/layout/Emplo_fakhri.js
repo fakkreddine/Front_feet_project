@@ -9,7 +9,8 @@ import Aside_v2 from '../component/Aside_v2';
 
 import {PlusOutlined} from '@ant-design/icons';
 import { Drawer } from "antd";
-import { createSwapy ,swapyRef } from 'swapy'
+import { createSwapy ,swapyRef,utils } from 'swapy'
+
 import Side from '../component/Side';
 const Loader = () => (
     <div className="flex justify-center items-center h-full">
@@ -35,73 +36,93 @@ const Emplo_fakhri = () => {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
     const [TimetableDat,setTimetableData] =useState([]);
-
-    const [monday, setMonday] = useState( [
-        "monday-8:00 - 9:30", 
-        "monday-9:30 - 11:00", 
-        "monday-11:00 - 12:30", 
-        "monday-12:30 - 2:00", 
-        "monday-2:00 - 3:30", 
-        "monday-3:30 - 5:00", 
-        "monday-5:00 - 6:30"
-    ]);
-    const [Tuesday, setTuesday] = useState( [
-        "tuesday-8:00 - 9:30", 
-        "tuesday-9:30 - 11:00", 
-        "tuesday-11:00 - 12:30", 
-        "tuesday-12:30 - 2:00", 
-        "tuesday-2:00 - 3:30", 
-        "tuesday-3:30 - 5:00", 
-        "tuesday-5:00 - 6:30"
-    ]);
-    const [Wednesday, setWednesday] = useState([
-        "wednesday-8:00 - 9:30", 
-        "wednesday-9:30 - 11:00", 
-        "wednesday-11:00 - 12:30", 
-        "wednesday-12:30 - 2:00", 
-        "wednesday-2:00 - 3:30", 
-        "wednesday-3:30 - 5:00", 
-        "wednesday-5:00 - 6:30"
-    ]);
-    const [Thursday, setThursday] = useState([
-        "thursday-8:00 - 9:30", 
-        "thursday-9:30 - 11:00", 
-        "thursday-11:00 - 12:30", 
-        "thursday-12:30 - 2:00", 
-        "thursday-2:00 - 3:30", 
-        "thursday-3:30 - 5:00", 
-        "thursday-5:00 - 6:30"
-    ]);
-    const [Friday, setFriday] = useState([
-        "friday-8:00 - 9:30", 
-        "friday-9:30 - 11:00", 
-        "friday-11:00 - 12:30", 
-        "friday-12:30 - 2:00", 
-        "friday-2:00 - 3:30", 
-        "friday-3:30 - 5:00", 
-        "friday-5:00 - 6:30"
-    ]);
-    const [Saturday, setSaturday] = useState([
-        "saturday-8:00 - 9:30", 
-        "saturday-9:30 - 11:00", 
-        "saturday-11:00 - 12:30", 
-        "saturday-12:30 - 2:00", 
-        "saturday-2:00 - 3:30", 
-        "saturday-3:30 - 5:00", 
-        "saturday-5:00 - 6:30"
-    ]);
-    const [Sunday, setSunday] = useState( [
-        "sunday-8:00 - 9:30", 
-        "sunday-9:30 - 11:00", 
-        "sunday-11:00 - 12:30", 
-        "sunday-12:30 - 2:00", 
-        "sunday-2:00 - 3:30", 
-        "sunday-3:30 - 5:00", 
-        "sunday-5:00 - 6:30"
-    ]);
-    const daysOfWeek = [monday,Tuesday, Wednesday, Thursday, Friday, Saturday,Sunday];
-    const stringdays=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-
+    const [weekSchedule, setWeekSchedule] = useState({
+        Monday: {
+            day: "Monday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 1, value: "" },
+                { time: "9:30 - 11:00", uid: 2, value: "" },
+                { time: "11:00 - 12:30", uid: 3, value: "" },
+                { time: "12:30 - 2:00", uid: 4, value: "" },
+                { time: "2:00 - 3:30", uid: 5, value: "" },
+                { time: "3:30 - 5:00", uid: 6, value: "" },
+                { time: "5:00 - 6:30", uid: 7, value: "" },
+            ],
+        },
+        Tuesday: {
+            day: "Tuesday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 8, value: "" },
+                { time: "9:30 - 11:00", uid: 9, value: "" },
+                { time: "11:00 - 12:30", uid: 10, value: "" },
+                { time: "12:30 - 2:00", uid: 11, value: "" },
+                { time: "2:00 - 3:30", uid: 12, value: "" },
+                { time: "3:30 - 5:00", uid: 13, value: "" },
+                { time: "5:00 - 6:30", uid: 14, value: "" },
+            ],
+        },
+        Wednesday: {
+            day: "Wednesday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 15, value: "" },
+                { time: "9:30 - 11:00", uid: 16, value: "" },
+                { time: "11:00 - 12:30", uid: 17, value: "" },
+                { time: "12:30 - 2:00", uid: 18, value: "" },
+                { time: "2:00 - 3:30", uid: 19, value: "" },
+                { time: "3:30 - 5:00", uid: 20, value: "" },
+                { time: "5:00 - 6:30", uid: 21, value: "" },
+            ],
+        },
+        Thursday: {
+            day: "Thursday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 22, value: "" },
+                { time: "9:30 - 11:00", uid: 23, value: "" },
+                { time: "11:00 - 12:30", uid: 24, value: "" },
+                { time: "12:30 - 2:00", uid: 25, value: "" },
+                { time: "2:00 - 3:30", uid: 26, value: "" },
+                { time: "3:30 - 5:00", uid: 27, value: "" },
+                { time: "5:00 - 6:30", uid: 28, value: "" },
+            ],
+        },
+        Friday: {
+            day: "Friday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 29, value: "" },
+                { time: "9:30 - 11:00", uid: 30, value: "" },
+                { time: "11:00 - 12:30", uid: 31, value: "" },
+                { time: "12:30 - 2:00", uid: 32, value: "" },
+                { time: "2:00 - 3:30", uid: 33, value: "" },
+                { time: "3:30 - 5:00", uid: 34, value: "" },
+                { time: "5:00 - 6:30", uid: 35, value: "" },
+            ],
+        },
+        Saturday: {
+            day: "Saturday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 36, value: "" },
+                { time: "9:30 - 11:00", uid: 37, value: "" },
+                { time: "11:00 - 12:30", uid: 38, value: "" },
+                { time: "12:30 - 2:00", uid: 39, value: "" },
+                { time: "2:00 - 3:30", uid: 40, value: "" },
+                { time: "3:30 - 5:00", uid: 41, value: "" },
+                { time: "5:00 - 6:30", uid: 42, value: "" },
+            ],
+        },
+        Sunday: {
+            day: "Sunday",
+            sessions: [
+                { time: "8:00 - 9:30", uid: 43, value: "" },
+                { time: "9:30 - 11:00", uid: 44, value: "" },
+                { time: "11:00 - 12:30", uid: 45, value: "" },
+                { time: "12:30 - 2:00", uid: 46, value: "" },
+                { time: "2:00 - 3:30", uid: 47, value: "" },
+                { time: "3:30 - 5:00", uid: 48, value: "" },
+                { time: "5:00 - 6:30", uid: 49, value: "" },
+            ],
+        },
+    });
+    const [slotItemMap, setSlotItemMap] = useState(utils.initSlotItemMap(weekSchedule, 'weekSchedule'));
 
     
 
@@ -189,15 +210,15 @@ const Emplo_fakhri = () => {
     const fetchtimetable=async(groupName)=>{
         try {
             const response = await axios.get(`http://localhost:5000/get-timetable-by-group-and-session?groupName=${groupName}&sessionId=${sessionId}`);
-            const fetchedData = response.data.timetable;
+            
       
-            if (Array.isArray(fetchedData)) {
-              setTimetableData(fetchedData);
-            } else {
-              console.log("Invalid timetable data format.");
-            }
+           
           } catch (err) {
-            console.log("Failed to fetch timetable.");
+            if (err.response.status=404){
+                setTimetableData([])
+            }else{
+                console.log("server error")
+            }
           }}
     //swappy
 
@@ -299,13 +320,15 @@ const Emplo_fakhri = () => {
         </tr>
         </thead>
         <tbody>
-            {daysOfWeek.map((day,index)=>{
+            {Object.keys(slotItemMap).map((days,index)=>{
+              
               return (  <tr class="bg-white dark:bg-gray-800">
-                 <td class="px-6 py-4 text-center font-medium border border-gray-300">{}{stringdays[index]}</td>
-                 {day.map(hour=>{
-                      return (<td  data-swapy-slot={hour} class="px-6 py-6 text-center border border-gray-300" id="monday-5-630">
+                 <td class="px-6 py-4 text-center font-medium border border-gray-300">{}{slotItemMap[days].day}</td>
+                 {slotItemMap[days].sessions.map(hour=>{
+                    console.log("hour",hour)
+                      return (<td  data-swapy-slot={`${hour.time}_${hour.uid}`} class="px-6 py-6 text-center border border-gray-300" id="monday-5-630">
                         
-        <div data-swapy-item={`${hour}slot`} className="bg-gray-200 w-20">      <Button
+        <div data-swapy-item={`${hour.time}_${hour.uid}slot`} className="bg-gray-200 w-20">      <Button
       type="primary"
       shape="circle"
       icon={<PlusOutlined />}
