@@ -106,6 +106,10 @@ const SchedulePage = () => {
     const splitTimeSlot = (entry) => {
       const { time_slot, ...rest } = entry;
       const [start, end] = time_slot.split(" - ");
+      console.log( timeSlots.filter((slot) => {
+        const [slotStart, slotEnd] = slot.split(" - ");
+        return start < slotEnd && end > slotStart;
+      }).map((slot) => ({ ...rest, time_slot: slot })))
       return timeSlots.filter((slot) => {
         const [slotStart, slotEnd] = slot.split(" - ");
         return start < slotEnd && end > slotStart;
