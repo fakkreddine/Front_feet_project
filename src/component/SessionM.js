@@ -31,6 +31,9 @@ function SessionM(props) {
       navigate("/StudentDashboard")
       return 
     }
+      if (props.role=="SuperAdmin") {
+          navigate("/SuperAdminDash")
+          return}
     
       navigate("/dash")
     

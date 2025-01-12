@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { 
-  GoogleAuthProvider, GithubAuthProvider, 
-  sendPasswordResetEmail, signInWithPopup, 
-  onAuthStateChanged, createUserWithEmailAndPassword, 
-  signOut, getAuth 
+import {
+  GoogleAuthProvider, GithubAuthProvider,
+  sendPasswordResetEmail, signInWithPopup,
+  onAuthStateChanged, createUserWithEmailAndPassword,
+  signOut, getAuth
 } from "firebase/auth";
 import axios from "axios";
-import { auth } from "./firebase"; 
+import { auth } from "./firebase";
 
 const AuthContext = createContext();
 
@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({ role: null, sessionList: [] });
+  const [alertMessage, setAlertMessage] = useState(null); // State for alert message
 
   const logout = async () => {
     try {
@@ -82,7 +83,11 @@ export const AuthProvider = ({ children }) => {
           setUserDetails({ role: res.data.roleUser, sessionList: res.data.sessionList });
           console.log({ role: res.data.roleUser, sessionList: res.data.sessionList });
         } catch (error) {
-          console.error("Error fetching roles:", error.message);
+          if (error.response && error.response.status === 500) {
+            setAlertMessage("Account on hold. If you have purchased the product, the admins will activate your account. Or just call us at +21646280499.");
+          } else {
+            console.error("Error fetching roles:", error.message);
+          }
         }
       } else {
         setUser(null);
@@ -94,27 +99,10 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      if (user) {
-        try {
-          await user.getIdToken(true);
-          console.log("Token refreshed.");
-        } catch (error) {
-          console.error("Error refreshing token:", error.message);
-          setUser(null);
-          setUserDetails({ role: null, sessionList: [] });
-        }
-      }
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [user]);
-
   return (
-    <AuthContext.Provider value={{ googleSignIn, githubSignIn, user, userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout, setdetail }}>
-      {loading ? null : children}  {/* Ensure content is only rendered after loading is done */}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ googleSignIn, githubSignIn, user, userDetails, resetPassword, signUpWithEmailAndPassword, auth, loading, logout, setdetail, alertMessage }}>
+        {loading ? null : children}  {/* Ensure content is only rendered after loading is done */}
+      </AuthContext.Provider>
   );
 };
 

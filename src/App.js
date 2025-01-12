@@ -11,6 +11,7 @@ import Groups from './layout/dashboardLayout/Groups';
 import Rooms from './layout/dashboardLayout/Rooms';
 import Scheduale from './layout/dashboardLayout/Scheduale';
 import Dash from './component/Dash';
+
 import Aside from './component/Aside';
 import DepartmentPage from './layout/DepartmentPage';
 
@@ -23,6 +24,9 @@ import Subject from './layout/subjects/Subject';
 import Init from './component/Init';
 import StudentDash from "./layout/dashboardStudent/StudentDash";
 import 'flowbite';
+import SuperAdminDash from "./component/SuperAdminDash";
+import SessionAdmin from "./component/SessionAdmin";
+import UsersTable from "./component/UsersTable";
 function App() {
   return (
     <div className="App">
@@ -50,7 +54,9 @@ function App() {
             <Route path="/dash/groups" element={<ProtectRoute><Groups /></ProtectRoute>} />
             <Route path="/dash/groups/:groupId" element={<ProtectRoute><ManageGroup /></ProtectRoute>} /> {/* New Route */}
 
-
+            <Route path="/Superadmindash" element={<ProtectRoute> <SuperAdminDash></SuperAdminDash></ProtectRoute>}></Route>
+            <Route path="/SessionAdmin" element={<ProtectRoute> <SessionAdmin></SessionAdmin></ProtectRoute>}></Route>
+            <Route path="/UsersTable" element={<ProtectRoute> <UsersTable></UsersTable></ProtectRoute>}></Route>
 
             <Route path="/TeacherDashboard" element={<ProtectRoute> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
             <Route path="/StudentDashboard" element={<ProtectRoute> <StudentDash></StudentDash></ProtectRoute>}></Route>
