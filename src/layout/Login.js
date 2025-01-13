@@ -13,13 +13,21 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 function Login() {
   const auth = getAuth();
   let navigate=useNavigate()
-  const {googleSignIn,githubSignIn,user,resetpass,alertMessage} =useAuth() ;
+  const {googleSignIn,githubSignIn,user,resetpass,alertMessage,userDetails} =useAuth() ;
   let [email,setmail]=useState();
   let [password,setpassword]=useState();
+
+
+
+  useEffect(()=>{
+    if (user) {
+       userDetails.roleUser=="SuperAdmin"? (navigate("Superadmindash") ):(navigate("/home"))
+    }
+  },[])
  const handelsignInwidthgoogle =async() =>{
   try {
     await googleSignIn();
-    navigate("/home")
+    userDetails.roleUser=="SuperAdmin"? (navigate("Superadmindash") ):(navigate("/home"))
   } catch (error) {
 
 
@@ -29,8 +37,8 @@ function Login() {
  const handelsignInwidthgithub =async() =>{
   try {
     let con =await githubSignIn();
-    console.log(con)
-    navigate("/dash")
+    
+    userDetails.roleUser=="SuperAdmin"? (navigate("Superadmindash") ):(navigate("/home"))
   } catch (error) {
 
 
@@ -42,6 +50,7 @@ const handelSignInwidhmail=()=>{
 signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     console.log(userCredential)
+    userDetails.roleUser=="SuperAdmin"? (navigate("Superadmindash") ):(navigate("/home"))
     // ...
   })
   .catch((error) => {

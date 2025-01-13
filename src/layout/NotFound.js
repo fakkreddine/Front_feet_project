@@ -4,7 +4,7 @@ import Nav from '../component/Nav';
 import { Link } from 'react-router-dom';
 const NotFound = () => (
   <div className='h-screen flex flex-col justify-center'>
-    <Nav></Nav>
+  <Nav></Nav>
     <Result
     status="404"
     title="404"

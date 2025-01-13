@@ -38,29 +38,38 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/notfound" element={<NotFound />} />
 
-            {/* ProtectRoute wrapper added for secure routes */}
-            <Route path='/dash' element={<ProtectRoute><UserHome /><Dash /></ProtectRoute>} />
-            <Route path='/dash/schedule' element={<ProtectRoute><UserHome /><Scheduale /></ProtectRoute>} />
-            <Route path='/dash/teachers' element={<ProtectRoute><UserHome /><Teacher /></ProtectRoute>} />
-            <Route path="/dash/departments" element={<ProtectRoute><DepartmentPage /></ProtectRoute>} />
-            <Route path="/dash" element={<ProtectRoute><UserHome /></ProtectRoute>} />
-            <Route path="/dash/teachers" element={<ProtectRoute><Teacher /></ProtectRoute>} />
-            <Route path="/dash/students" element={<ProtectRoute> <UserHome />   <Student /></ProtectRoute>} />
-            <Route path="/dash/rooms" element={<ProtectRoute><Rooms /></ProtectRoute>} />
-            <Route path="/dash/schedule" element={<ProtectRoute><Scheduale /></ProtectRoute>} />
-            <Route path="/home" element={<ProtectRoute><Home /></ProtectRoute>} />
+              {/* user home  */}
+            <Route path="/home" element={<ProtectRoute allowedRoles={['Admin','Teacher','SuperAdmin','Student']} ><Home /></ProtectRoute>} />
 
-            {/* Route for managing groups */}
-            <Route path="/dash/groups" element={<ProtectRoute><Groups /></ProtectRoute>} />
-            <Route path="/dash/groups/:groupId" element={<ProtectRoute><ManageGroup /></ProtectRoute>} /> {/* New Route */}
 
-            <Route path="/Superadmindash" element={<ProtectRoute> <SuperAdminDash></SuperAdminDash></ProtectRoute>}></Route>
-            <Route path="/SessionAdmin" element={<ProtectRoute> <SessionAdmin></SessionAdmin></ProtectRoute>}></Route>
-            <Route path="/UsersTable" element={<ProtectRoute> <UsersTable></UsersTable></ProtectRoute>}></Route>
+            {/* admin dash */}
 
-            <Route path="/TeacherDashboard" element={<ProtectRoute> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
-            <Route path="/StudentDashboard" element={<ProtectRoute> <StudentDash></StudentDash></ProtectRoute>}></Route>
-            <Route path="/dash/subjects" element={<ProtectRoute> <Subject></Subject></ProtectRoute>}></Route>
+            <Route path='/dash' element={<ProtectRoute allowedRoles={['Admin']} ><UserHome /><Dash /></ProtectRoute>} />
+            <Route path='/dash/schedule' element={<ProtectRoute allowedRoles={['Admin']}><UserHome /><Scheduale /></ProtectRoute>} />
+            <Route path='/dash/teachers' element={<ProtectRoute allowedRoles={['Admin']} ><UserHome /><Teacher /></ProtectRoute>} />
+            <Route path="/dash/departments" element={<ProtectRoute allowedRoles={['Admin']} ><DepartmentPage /></ProtectRoute>} />
+            <Route path="/dash/teachers" element={<ProtectRoute allowedRoles={['Admin']} ><Teacher /></ProtectRoute>} />
+            <Route path="/dash/students" element={<ProtectRoute allowedRoles={['Admin']} > <UserHome />   <Student /></ProtectRoute>} />
+            <Route path="/dash/rooms" element={<ProtectRoute allowedRoles={['Admin']} ><Rooms /></ProtectRoute>} />
+            <Route path="/dash/schedule" element={<ProtectRoute allowedRoles={['Admin']} ><Scheduale /></ProtectRoute>} />
+            <Route path="/dash/subjects" element={<ProtectRoute allowedRoles={['Admin']} > <Subject></Subject></ProtectRoute>}></Route>
+
+            <Route path="/dash/groups" element={<ProtectRoute allowedRoles={['Admin']} ><Groups /></ProtectRoute>} />
+            <Route path="/dash/groups/:groupId" element={<ProtectRoute allowedRoles={['Admin']} ><ManageGroup /></ProtectRoute>} /> {/* New Route */}
+
+
+             {/* admin dash */}
+            <Route path="/Superadmindash" element={<ProtectRoute allowedRoles={['SuperAdmin']} > <SuperAdminDash></SuperAdminDash></ProtectRoute>}></Route>
+            <Route path="/SessionAdmin" element={<ProtectRoute allowedRoles={['SuperAdmin']}> <SessionAdmin></SessionAdmin></ProtectRoute>}></Route>
+            <Route path="/UsersTable" element={<ProtectRoute allowedRoles={['SuperAdmin']}> <UsersTable></UsersTable></ProtectRoute>}></Route>
+
+
+
+            <Route path="/TeacherDashboard" element={<ProtectRoute allowedRoles={['Teacher']}> <TeacherDash></TeacherDash></ProtectRoute>}></Route>
+
+
+            <Route path="/StudentDashboard" element={<ProtectRoute allowedRoles={['Student']}> <StudentDash></StudentDash></ProtectRoute>}></Route>
+           
 
 
           </Routes>

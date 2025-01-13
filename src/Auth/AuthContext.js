@@ -80,8 +80,8 @@ export const AuthProvider = ({ children }) => {
         try {
           const res = await axios.get(`http://localhost:8081/roles/${currentUser.uid}`);
           setUser(currentUser);
-          setUserDetails({ role: res.data.roleUser, sessionList: res.data.sessionList });
-          console.log({ role: res.data.roleUser, sessionList: res.data.sessionList });
+          setUserDetails({ roleUser: res.data.roleUser, sessionList: res.data.sessionList });
+          
         } catch (error) {
           if (error.response && error.response.status === 500) {
             setAlertMessage("Account on hold. If you have purchased the product, the admins will activate your account. Or just call us at +21646280499.");

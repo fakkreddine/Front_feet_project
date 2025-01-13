@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import "../css/loder.css";
 import { useAuth } from './AuthContext';
 import Login from '../layout/Login';
+import { Navigate } from 'react-router-dom';
 
-function ProtectRoute({ children }) {
-  const { user, auth, Loding } = useAuth();
+function ProtectRoute({ children,allowedRoles }) {
+  const { user, auth, Loding,userDetails } = useAuth();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -21,7 +22,27 @@ function ProtectRoute({ children }) {
         </div>
       );
     } else {
-      return user ? children : <Login />;
+
+
+      if (user){
+console.log("role",userDetails)
+      if(allowedRoles.includes(userDetails.roleUser)){
+        return children
+      }else{
+        return  <Navigate to={"/notfound"}/> 
+        
+      }
+
+
+
+      
+        
+      }else{
+        
+         <Navigate to={"/login"}/>
+         return 
+      }
+      
     }
   };
 
