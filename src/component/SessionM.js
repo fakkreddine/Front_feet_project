@@ -22,16 +22,16 @@ function SessionM(props) {
   let navigate =useNavigate();
   let red=()=>{
     dispatch(addSession(props.item))
-    console.log("ff",props.role)
-    if (props.role=="Teacher") {
+    console.log("ff",props.role.roleUser  )
+    if (props.role.roleUser=="Teacher") {
       navigate("/TeacherDashboard")
       return 
     }
-    if (props.role=="Student") {
+    if (props.role.roleUser=="Student") {
       navigate("/StudentDashboard")
       return 
     }
-      if (props.role=="SuperAdmin") {
+      if (props.role.roleUser=="SuperAdmin") {
           navigate("/SuperAdminDash")
           return}
     

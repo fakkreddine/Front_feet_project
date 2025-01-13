@@ -18,6 +18,7 @@ import Pie from './Pie';
 import Usage from './Usage';
 import DataTransferStats from './DataTransferStats';
 import MongoStats from './MongoStats';
+import Nav from './Nav';
 
 function SuperAdminDash() {
     const sessionId = useSelector((state) => state.session.value);
@@ -25,6 +26,7 @@ function SuperAdminDash() {
     return (
         <>
             <Aside_v2 />
+            <Nav />
             <main className="ml-24 mt-15 pt-14 transition-all duration-300 peer-hover:ml-64 h-screen p-4" style={{ height: "100vh" }}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div>

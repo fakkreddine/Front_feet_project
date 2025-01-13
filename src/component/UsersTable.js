@@ -154,9 +154,9 @@ const UsersTable = () => {
         <div className="container mx-auto mt-8">
             <Aside_v2 />
             <Nav />
-            <h1 className="text-2xl font-bold mb-4">Users List</h1>
+            <div className="ml-24 transition-all duration-300 peer-hover:ml-64 h-screen dark:bg-gray-900 mt-20 "><h1 className="text-2xl font-bold mb-4">Users List</h1>
             {/* Search input */}
-            <div className="p-6 rounded-md shadow-md border-gray-200 w-full h-4/5 mx-auto border">
+            <div className="p-8 rounded-md shadow-md border-gray-200 w-full h-4/5 mx-auto border">
                 <form className="flex items-center max-w-lg mx-auto mb-4">
                     <label htmlFor="voice-search" className="sr-only">Search</label>
                     <div className="relative w-full">
@@ -317,7 +317,8 @@ const UsersTable = () => {
                 </div>
             )}
 
-
+</div>
+            
         </div>
     );
 };
