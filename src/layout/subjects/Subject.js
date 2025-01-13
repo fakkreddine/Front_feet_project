@@ -34,11 +34,11 @@ try {
     error(error)
 }
 
-              
+
 
 
             })()
-    
+
         }}
         const items = [
             {
@@ -64,7 +64,7 @@ try {
   const [name, setname] = useState();
   const [duration, setduration] = useState();
   const [cat, setcat] = useState('Lecture');
- 
+
 
   const [messageApi, contextHolder] = message.useMessage();
   const success = (msg) => {
@@ -95,10 +95,11 @@ try {
             success("Subject addes successfully ")
             setIsModalOpen(false);
             fetchData()
-    } catch (error) {
-        error(error)
+    } catch (err) {
+        showError('Operation failed');
+        console.error(err);
     }
-    
+
    }else{
     try {
         const {data:response=[]}=await axios.put(`http://localhost:8081/admin/session/${sessionId}/subject/${selected.id}`,{
@@ -117,6 +118,9 @@ try {
 
 
   };
+    const showError = (msg) => {
+        messageApi.open({ type: 'error', content: msg });
+    };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -194,38 +198,63 @@ try {
             </li>
           </ol>
         </nav>
-        <Modal title={!edit?"Add Subject":"edit Subject"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <form class="p-4 md:p-5">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input onChange={(e)=>{setname(e.target.value)}} value={name} type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Subject name" required=""/>
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
-                        <input onChange={(e)=>{setduration(e.target.value)}} value={duration} type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="3 Hours" required=""/>
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                        <select  onChange={(e)=>{
-                            setcat(e.target.value)
-                            
-                        }} value={cat} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected="Lecture">Lecture</option>
-                            <option value="Lab">Lab</option>
-                            
-                        </select>
-                    </div>
-                    
-                </div>
-             
-            </form>
-        </Modal>
+          <Modal title={!edit ? "Add Subject" : "Edit Subject"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+              <form className="p-4 md:p-5">
+                  <div className="grid gap-4 mb-4 grid-cols-2">
+                      <div className="col-span-2">
+                          <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                          <input
+                              onChange={(e) => setname(e.target.value)}
+                              value={name}
+                              type="text"
+                              name="name"
+                              id="name"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              placeholder="Type Subject name"
+                              required
+                          />
+                      </div>
+                      <div className="col-span-2 sm:col-span-1">
+                          <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+                          <input
+                              onChange={(e) => {
+                                  const value = e.target.value;
+                                  if (value >= 0) {
+                                      setduration(value);
+                                  } else {
+                                      alert("Duration cannot be negative!");
+                                  }
+                              }}
+                              value={duration}
+                              type="number"
+                              name="price"
+                              id="price"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              placeholder="3 Hours"
+                              required
+                          />
+                      </div>
+                      <div className="col-span-2 sm:col-span-1">
+                          <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                          <select
+                              onChange={(e) => setcat(e.target.value)}
+                              value={cat}
+                              id="category"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          >
+                              <option value="Lecture">Lecture</option>
+                              <option value="Lab">Lab</option>
+                          </select>
+                      </div>
+                  </div>
+              </form>
+          </Modal>
 
 
 
 
-        <section className=" dark:bg-gray-900 p-3 sm:p-5">
+
+          <section className=" dark:bg-gray-900 p-3 sm:p-5">
           <div className="mx-auto border shadow-md rounded-lg border-gray-200 p-6  ">
             <div className="bg-white  dark:bg-gray-800 relative   overflow-hidden">
               <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -337,19 +366,19 @@ try {
 </svg>
 {subject.duration}
 </span>
-                                
+
                                 </td>
                             <td className="px-4 py-3"><span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                 <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
                 Active
             </span></td>
                             <td className="px-4 py-3">
-                            
+
                             <span class={subject.type=='Lecture'?"bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300":"bg-purple-100 text-purple-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300"}>{subject.type}</span>
                             </td>
                             <td className="px-4 py-3 flex items-center justify-end">
 
-                                <button onClick={()=>{setselceted(subject)}}>  <Dropdown menu={{ items, onClick }} trigger={['click']}>  
+                                <button onClick={()=>{setselceted(subject)}}>  <Dropdown menu={{ items, onClick }} trigger={['click']}>
   <svg
     className="w-5 h-5"
     aria-hidden="true"
@@ -360,8 +389,8 @@ try {
     <path d="M10 3a1 1 0 110 2 1 1 0 010-2zm0 6a1 1 0 110 2 1 1 0 010-2zm0 6a1 1 0 110 2 1 1 0 010-2z" />
   </svg>
 </Dropdown></button>
-                          
-                            
+
+
                             </td>
                           </tr>
                         ))
