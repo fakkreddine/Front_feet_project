@@ -36,11 +36,11 @@ const Emplo_fakhri = () => {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
     const [TimetableDat,setTimetableData] =useState([]);
-    const [weekSchedule, setWeekSchedule] = useState({
-        Monday: {
+    const [weekSchedule, setWeekSchedule] = useState([
+        {
             day: "Monday",
             sessions: [
-                { time: "8:00 - 9:30", uid: 1, value: "" },
+                { time: "8:00 - 9:30", uid: 1, value: "f" },
                 { time: "9:30 - 11:00", uid: 2, value: "" },
                 { time: "11:00 - 12:30", uid: 3, value: "" },
                 { time: "12:30 - 2:00", uid: 4, value: "" },
@@ -49,7 +49,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 7, value: "" },
             ],
         },
-        Tuesday: {
+         {
             day: "Tuesday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 8, value: "" },
@@ -61,7 +61,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 14, value: "" },
             ],
         },
-        Wednesday: {
+        {
             day: "Wednesday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 15, value: "" },
@@ -73,7 +73,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 21, value: "" },
             ],
         },
-        Thursday: {
+       {
             day: "Thursday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 22, value: "" },
@@ -85,7 +85,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 28, value: "" },
             ],
         },
-        Friday: {
+       {
             day: "Friday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 29, value: "" },
@@ -97,7 +97,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 35, value: "" },
             ],
         },
-        Saturday: {
+        {
             day: "Saturday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 36, value: "" },
@@ -109,7 +109,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 42, value: "" },
             ],
         },
-        Sunday: {
+        {
             day: "Sunday",
             sessions: [
                 { time: "8:00 - 9:30", uid: 43, value: "" },
@@ -121,7 +121,7 @@ const Emplo_fakhri = () => {
                 { time: "5:00 - 6:30", uid: 49, value: "" },
             ],
         },
-    });
+    ]);
     const [slotItemMap, setSlotItemMap] = useState(utils.initSlotItemMap(weekSchedule, 'weekSchedule'));
 
     
@@ -236,19 +236,19 @@ const Emplo_fakhri = () => {
             //console.log('swap', event);
           })
           swapy.current.onBeforeSwap((event) => {
-            console.log(event)
             if ((event.fromSlot=='Slot_slot'||event.toSlot=='Slot_slot')||(event.fromSlot=='slot_break'||event.toSlot=='slot_break')||(event.fromSlot=='Slot_empty'||event.toSlot=='Slot_empty')) {
+            console.log(event)
                 
                 return false
             }else{
                 return true
             }
-            
-               
-            
-            // 'a'
-          
-           
+
+          })
+
+          swapy.current.onSwapEnd(event=>{
+            console.log("end",event)
+
           })
         }
        
@@ -320,21 +320,21 @@ const Emplo_fakhri = () => {
         </tr>
         </thead>
         <tbody>
-            {Object.keys(slotItemMap).map((days,index)=>{
+        {Object.keys(weekSchedule).map((days,index)=>{
               
               return (  <tr class="bg-white dark:bg-gray-800">
-                 <td class="px-6 py-4 text-center font-medium border border-gray-300">{}{slotItemMap[days].day}</td>
-                 {slotItemMap[days].sessions.map(hour=>{
+                 <td class="px-6 py-4 text-center font-medium border border-gray-300">{}{weekSchedule[days].day}</td>
+                 {weekSchedule[days].sessions.map(hour=>{
                     console.log("hour",hour)
                       return (<td  data-swapy-slot={`${hour.time}_${hour.uid}`} class="px-6 py-6 text-center border border-gray-300" id="monday-5-630">
                         
-        <div data-swapy-item={`${hour.time}_${hour.uid}slot`} className="bg-gray-200 w-20">      <Button
+        <div data-swapy-item={`${hour.time}_${hour.uid}slot`} className="bg-gray-200 w-20">     {hour.value==''? <Button
       type="primary"
       shape="circle"
       icon={<PlusOutlined />}
       size="large"
       onClick={() => console.log('Plus button clicked!')}
-    />
+    />:<p>fakkhr</p>}
         </div>
    
                       </td>)
